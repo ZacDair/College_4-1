@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation=
+                "http://www.springframework.org/schema/beans
+                  https://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- bean definitions and configurations go here -->
+    <bean id="dc" class="com.company.Publisher">
+        <constructor-arg value="DC Comics"></constructor-arg>
+    </bean>
+
+    <!-- Bean construction using constructor -->
+    <bean id="arrowverse" class="com.company.Franchise">
+        <constructor-arg value="Arrowverse"></constructor-arg>
+        <constructor-arg ref="dc"></constructor-arg>
+    </bean>
+
+    <!-- Bean construction using properties (setter based) -->
+    <bean id="justiceLeague" class="com.company.Franchise">
+        <property name="franchiseName" value="Justice League"></property>
+        <property name="publisher" ref="dc"></property>
+    </bean>
+
+    <!-- Additional bean creation for hero classes -->
+    <!-- ArrowVerse Heros -->
+    <bean id="blackCanary" class="com.company.Hero">
+        <property name="heroName" value="Black Canary"></property>
+        <property name="franchise" ref="arrowverse"></property>
+    </bean>
+    <bean id="greenArrow" class="com.company.Hero">
+        <property name="heroName" value="Green Arrow"></property>
+        <property name="franchise" ref="arrowverse"></property>
+    </bean>
+    <bean id="killerFrost" class="com.company.Hero">
+        <property name="heroName" value="Killer Frost"></property>
+        <property name="franchise" ref="arrowverse"></property>
+    </bean>
+
+    <!-- Justice League Heros -->
+    <bean id="wonderWoman" class="com.company.Hero">
+        <constructor-arg value="Wonder Woman"></constructor-arg>
+        <constructor-arg ref="justiceLeague"></constructor-arg>
+    </bean>
+    <bean id="aquaman" class="com.company.Hero">
+        <constructor-arg value="Aquaman"></constructor-arg>
+        <constructor-arg ref="justiceLeague"></constructor-arg>
+    </bean>
+    <bean id="batman" class="com.company.Hero">
+        <constructor-arg value="Batman"></constructor-arg>
+        <constructor-arg ref="justiceLeague"></constructor-arg>
+    </bean>
+</beans>
