@@ -1,0 +1,31 @@
+10 Word Title
+Contextual analysis to improve Human-AI communication
+
+Research Question
+Can AI assistants be improved using awareness and analysis of human context
+
+Proposal
+Currently one of the main issues in Human to AI communication is the lack of contextual knowledge.
+
+This issue is widely visible in AI assistants and stems from how the AI treats the sentence it's given.
+In many cases, the sentence is treated as a command or a search query, the computer concretely processes this to achieve the expected goal, or uses a search engine to provide the desired information.
+
+This "strict" type of communication can easily be identified as a computer-generated response instead of a human's response as it may differ from what was originally asked, or it may read the first result from a search engine regardless of the relativity of the content.
+In the worst case, the assistant may simply say it doesn't understand the query.
+
+These "faulty" responses can be reduced by introducing contextual understanding by using context.
+Here is an example of contextual understanding in command processing:
+Instead of solely relying on keywords, an AI assistant asked to turn down the brightness of a screen will consider the current time of day, at night the brightness would be turned down greatly, during the day it may only be lowered slightly, this functionality requires the AI to infer context from the command, essentially showing a level of greater understanding of the command it's given.
+
+Context also allows AI assistants to communicate in a more human-like manner.
+Humans are able to use interconnected layers of accumulated knowledge in conversations with little effort, with computers however the purpose and understanding of a conversation is elusive and undefined to an AI assistant.
+A lacking factor that causes less human-like responses is context, the addition of contextual understanding allows an assistant to infer subtle considerations that may not have been directly in question.
+
+An example of indirect inference: "That meeting went well, schedule another for next week" 
+A human is able to understand we want to schedule another meeting at the same time, place, with the same people but next week.
+Whereas an AI assistant may pick up on the keyword "schedule" and ask you for further details about when, where, and with who, even though that information was previously inferred by the user, with a contextual understanding the AI assistant is able to process commands that are not concretely given.
+
+This functionality also extends its capabilities in responding to the user by identifying the context in search query results as to return only the information required to the user.
+
+These are a few examples of how contextual understanding can improve the accuracy and human-like responses of an AI assistant.
+I hope to achieve a level of contextual understanding using NLP, N-Gram methods, and further research.
