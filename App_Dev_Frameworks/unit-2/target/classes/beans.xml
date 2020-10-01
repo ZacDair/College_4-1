@@ -10,15 +10,13 @@
     </bean>
 
     <!-- Bean construction using constructor -->
-    <bean id="arrowverse" class="com.company.Franchise">
+    <bean id="arrowverse" class="com.company.Franchise" autowire="byType">
         <constructor-arg value="Arrowverse"></constructor-arg>
-        <constructor-arg ref="dc"></constructor-arg>
     </bean>
 
     <!-- Bean construction using properties (setter based) -->
-    <bean id="justiceLeague" class="com.company.Franchise">
+    <bean id="justiceLeague" class="com.company.Franchise" autowire="byType">
         <property name="franchiseName" value="Justice League"></property>
-        <property name="publisher" ref="dc"></property>
     </bean>
 
     <!-- Additional bean creation for hero classes -->
@@ -48,5 +46,10 @@
     <bean id="batman" class="com.company.Hero">
         <constructor-arg value="Batman"></constructor-arg>
         <constructor-arg ref="justiceLeague"></constructor-arg>
+    </bean>
+
+    <!-- Additional franchise bean to test auto-wiring-->
+    <bean id="dcSuperGirls" class="com.company.Franchise" autowire="byType">
+        <property name="franchiseName" value="DC Super Hero Girls"></property>
     </bean>
 </beans>

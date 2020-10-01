@@ -11,4 +11,9 @@ import lombok.NoArgsConstructor;
 public class Franchise {
     private String franchiseName;
     private Publisher publisher;
+
+    //Constructor to allow for auto-wiring
+    public Franchise(String franchiseName){
+        this.franchiseName = franchiseName;
+    }
 }
