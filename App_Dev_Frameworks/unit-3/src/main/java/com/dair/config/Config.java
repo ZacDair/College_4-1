@@ -18,11 +18,11 @@ public class Config {
     // Create franchise beans injecting marvel
     @Bean
     public Franchise avengers(){
-        return new Franchise("Avengers", marvel());
+        return new Franchise("Avengers");
     }
     @Bean
     public Franchise spiderverse(){
-        return new Franchise("Spiderverse", marvel());
+        return new Franchise("Spiderverse");
     }
 
     // Create Hero beans for Avengers
