@@ -35,5 +35,8 @@ public class Main{
         Hero bats = ((Hero) context.getBean("batman"));
         System.out.println(bats);
 
+        Franchise sg = ((Franchise) context.getBean("dcSuperGirls"));
+        System.out.println(sg);
+
     }
 }
