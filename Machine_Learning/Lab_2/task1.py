@@ -5,6 +5,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
 
 def partA():
@@ -76,12 +77,49 @@ def partD():
     # Sort by temperature
     data = data.sort_values(by=["temp"])
 
-    # Create the graph
-    plt.scatter(data['temp'], data['casual'], label="Casual")
-    plt.scatter(data['temp'], data['registered'], label="Registered")
+    # Create the graphs one for actual temp, one for temp feel
+    plt.subplot(211)
     plt.title('Temperature / Causal and Registered Rentals')
-    plt.legend(loc=2)
+    plt.scatter(data['casual'], data['temp'], label="Casual")
+    plt.scatter(data['registered'], data['temp'], label="Registered")
+    plt.legend(loc=0)
+
+    plt.subplot(212)
+    plt.title('Temperature Feel / Causal and Registered Rentals')
+    plt.scatter(data['casual'], data['atemp'], label="Casual")
+    plt.scatter(data['registered'], data['atemp'], label="Registered")
+    plt.legend(loc=0)
+    plt.show()
+
+    '''From running the above function we can see in the scatter graph wider distribution of registered rentals, with
+    an increasing amount of rentals as the temperature increases'''
+
+
+def partE():
+    # List of attributes we care about
+    attributeNames = ["temp", "hum", "windspeed", "casual"]
+
+    # Load our dataset
+    data = pd.read_csv("day.csv", usecols=attributeNames)
+
+    # Split our dataset based on the median of the casual column
+    casualMedian = np.median(data['casual'])
+    busyDays = data[data["casual"] > casualMedian]
+    quietDays = data[data["casual"] < casualMedian]
+
+    # 3D plot
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    ax.scatter(quietDays['temp'], quietDays['hum'], quietDays['windspeed'], color='g', label="Quiet")
+    ax.scatter(busyDays['temp'], busyDays['hum'], busyDays['windspeed'], color='r', label="Busy")
+    plt.legend(loc=0)
+    plt.title("Temp, Hum, Windspeed / Casual Rentals split by busyness (Median: " + str(casualMedian) + ")")
     plt.show()
 
 
+# All Questions run one after another using these function calls
+partA()
+partB()
+partC()
 partD()
+partE()
