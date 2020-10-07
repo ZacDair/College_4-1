@@ -32,22 +32,23 @@ int main() {
             if (word[0] == '\0') {
                 if (isalpha(c) || c == '_') {
                     word[0] = c;
+                    pos++;
                 }
             }
             // Else if we have a char in the word check if its a letter, underscore or number
             else{
                 if (isalpha(c) || c == '_' || isalnum(c)) {
                     word[pos] = c;
+                    pos++;
                 }
                 else{
                     word[pos] = '\0';
                     printf("Added: %.*s\n", pos, word + 0);
                     head = insert(head, word);
                     word[0] = '\0';
-                    pos = -1;
+                    pos = 0;
                 }
             }
-            pos++;
             line++;
         }
 
