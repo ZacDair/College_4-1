@@ -1,0 +1,4 @@
+CREATE TABLE Hero(
+    heroID INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    heroName varchar(255) NOT NULL
+);
