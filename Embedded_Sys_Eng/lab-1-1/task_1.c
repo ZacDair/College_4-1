@@ -7,7 +7,7 @@ FILE * file;
 int main() {
 
     // Open the file, returns null if the file wasn't opened
-    file= fopen("../t.txt", "r");
+    file= fopen("t.txt", "r");
     if (file != NULL) {
         char buff[255];
 
