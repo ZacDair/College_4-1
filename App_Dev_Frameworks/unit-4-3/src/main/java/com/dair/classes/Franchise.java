@@ -7,9 +7,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Hero {
+public class Franchise {
 
-    private String heroName;
-    private int heroID;
+    private String franchiseName;
     private int franchiseID;
 }
