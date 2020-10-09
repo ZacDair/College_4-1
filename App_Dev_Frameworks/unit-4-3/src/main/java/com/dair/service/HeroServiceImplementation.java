@@ -28,7 +28,7 @@ public class HeroServiceImplementation implements HeroService {
         return returnedHero;
     }
 
-    //Returns all the heros
+    //Returns all the heroes
     public List<Hero> findAllHeroes(){
         return heroDao.findAllHeroes();
     }
@@ -64,5 +64,14 @@ public class HeroServiceImplementation implements HeroService {
        }
        System.out.println("ERROR: "+heroName+" already exists in the database");
        return null;
+    }
+
+    //Returns all the heroes that belong to a franchise by ID
+    public List<Hero> findAllHeroesByFranchiseID(int franchiseID){
+        List<Hero> returnedHeroes = heroDao.findHeroesByFranchiseID(franchiseID);
+        if (returnedHeroes.isEmpty()){
+            System.out.println("ERROR: No Heroes have a franchise ID of: " + franchiseID);
+        }
+        return returnedHeroes;
     }
 }

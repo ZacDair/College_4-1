@@ -20,4 +20,6 @@ public interface HeroDao {
     int changeHeroName(String oldName, String newName);
 
     int addHero(String heroName);
+
+    List<Hero> findHeroesByFranchiseID(int franchiseID);
 }

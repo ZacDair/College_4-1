@@ -16,4 +16,6 @@ public interface HeroService {
     int changeHeroName(String green_arrow, String oliver_queen);
 
     Hero addHero(String the_punisher);
+
+    List<Hero> findAllHeroesByFranchiseID(int franchiseID);
 }

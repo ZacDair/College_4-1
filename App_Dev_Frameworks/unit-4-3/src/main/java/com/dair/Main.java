@@ -1,6 +1,7 @@
 package com.dair;
 
 import com.dair.classes.Hero;
+import com.dair.service.FranchiseService;
 import com.dair.service.HeroService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -17,7 +18,7 @@ public class Main {
         //Get the count of heroes
         System.out.println("There are " + heroService.countTheHeroes() + " heroes in the database");
 
-        //Get hero by id (slight issue)
+        //Get hero by id
         System.out.println("\nFind Hero with ID 1: " + heroService.findHero(1));
 
         //Get all heroes from the DB
@@ -43,5 +44,32 @@ public class Main {
         System.out.println("Trying to add 'The Punisher' again...");
         System.out.println("Adding 'The Punisher' => "+heroService.addHero("The Punisher"));
 
+        //Get the franchiseService bean
+        FranchiseService franchiseService = (FranchiseService) context.getBean("franchiseServiceImplementation");
+
+        //Counting the entries in the Franchise table
+        System.out.println("\nUsing a second table, Franchises:");
+        System.out.println("There are " + franchiseService.countFranchises() + " franchises in the database");
+
+        //Get franchise by ID
+        System.out.println("\nFind Franchise with ID 1: " + franchiseService.findFranchise(1));
+
+        System.out.println("Find all heroes in the franchise with ID: 1");
+        List<Hero> franchiseHeroes = heroService.findAllHeroesByFranchiseID(1);
+        for (Hero hero : franchiseHeroes){
+            System.out.println("\t" + hero);
+        }
+
+        //Delete or try to delete a hero from the database by ID
+        System.out.println("Delete Franchise by franchiseID: 1\nNumber of rows deleted: " + franchiseService.deleteFranchiseByFranchiseID(heroService, 1));
+        System.out.println("\nNow trying to delete the same Franchise...");
+        System.out.println("Delete Franchise by franchiseID: 1\nNumber of rows deleted: " + franchiseService.deleteFranchiseByFranchiseID(heroService, 1));
+
+        //Get all heroes from the DB to show our end result
+        System.out.println("\nOur final result of all heroes remaining in the database: ");
+        heroes = heroService.findAllHeroes();
+        for (Hero hero : heroes){
+            System.out.println("\t" + hero);
+        }
     }
 }

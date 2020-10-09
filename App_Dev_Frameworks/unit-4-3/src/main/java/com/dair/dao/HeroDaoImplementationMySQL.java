@@ -78,4 +78,13 @@ public class HeroDaoImplementationMySQL implements HeroDao {
                 }, keyHolder);
         return keyHolder.getKey().intValue();
     }
+
+    // Returns and maps all heroes from the DB by that belong to a franchise
+    public List<Hero> findHeroesByFranchiseID(int franchiseID){
+        try {
+            return jdbcTemplate.query("SELECT * FROM Hero WHERE Hero.franchiseID = ?", new HeroRowMapper(), franchiseID);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

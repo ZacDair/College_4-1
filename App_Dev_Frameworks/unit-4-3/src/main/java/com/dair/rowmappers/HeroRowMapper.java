@@ -9,6 +9,6 @@ import java.sql.SQLException;
 
 public class HeroRowMapper implements RowMapper<Hero> {
     public Hero mapRow(ResultSet rs, int rowNumber) throws SQLException{
-        return new Hero(rs.getString("heroName"), rs.getInt("heroID"));
+        return new Hero(rs.getString("heroName"), rs.getInt("heroID"), rs.getInt("franchiseID"));
     }
 }

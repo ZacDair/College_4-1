@@ -1,10 +1,17 @@
-INSERT INTO Hero (heroID, heroName) VALUES
-(1, 'Iron Man'),
-(2, 'Green Arrow'),
-(3, 'Thor'),
-(4, 'Flash'),
-(5, 'Spiderman'),
-(6, 'Hulk'),
-(7, 'Black Panther'),
-(8, 'Captain America'),
-(9, 'Doctor Strange');
+-- Populate our Franchise table with two entries --
+INSERT INTO Franchise (franchiseID,franchiseName) VALUES
+(1, 'Marvel Studios'),
+(2, 'DC Comics');
+
+-- Populate our Hero table with multiple heroes from different franchises --
+-- Ideally a select statement would be used to find the FK of the franchise --
+INSERT INTO Hero (heroID, heroName, franchiseID) VALUES
+(1, 'Iron Man', 1),
+(2, 'Green Arrow', 2),
+(3, 'Thor', 1),
+(4, 'Flash', 2),
+(5, 'Spiderman', 1),
+(6, 'Hulk', 1),
+(7, 'Black Canary', 2),
+(8, 'Captain America', 1),
+(9, 'Deadshot', 2);
