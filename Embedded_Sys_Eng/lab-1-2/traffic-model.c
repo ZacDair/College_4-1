@@ -48,13 +48,24 @@ int main()
     S = goN;
     while(1){
        usleep(100);
-
        /* add in  here your emulation of the code */
 
 /* TODO replace the following line with a printf of the current value of lights
         The value of the lights is in FSM[S].Out */
 
-       //LIGHT = FSM[S].Out;  
+       int lightVal = FSM[S].Out;
+       if (lightVal & 1){
+        printf("%d-1\n",lightVal);
+       }
+       else if (lightVal & 2){
+        printf("%d-2\n",lightVal);
+       }
+       else if (lightVal & 3){
+        printf("%d-3\n",lightVal);
+       }
+       else if (lightVal & 4){
+        printf("%d-4\n",lightVal);
+       }
       
       
 
@@ -70,10 +81,20 @@ int main()
           printf("you entered %s\n",data);
 /* TODO  Set the input value to 00 or 01 or 10 or 11 binary i.e. 0,1,2,3 decimal depending on the input.
          For example If the user enters N set Input to 2 decimal i.e. 10 binary. */
-
-      
-           }
-       S = FSM[S].Next[Input];     // keep this line as is
-       }
+          if(*data == 'N'){
+            Input = 2;
+          }
+          else if (*data == 'E'){
+            Input = 3;
+          }
+          else if (data == "NE"){
+            Input = 4;
+          }
+          else{
+            Input = 1;
+          }
+         }
+      S = FSM[S].Next[Input];     // keep this line as is
+     }
 
 }
