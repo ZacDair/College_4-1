@@ -2,11 +2,13 @@ package classTests;
 
 import com.dair.classes.Franchise;
 import com.dair.classes.Hero;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
 
-public class simpleClassTests {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+
+public class SimpleClassTests {
 
     @Test
     public void testSetHeroName(){
