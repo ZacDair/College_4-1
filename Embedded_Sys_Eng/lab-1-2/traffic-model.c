@@ -53,42 +53,50 @@ int main(){
         if(lightVal != oldOutput) {
             if (lightVal & 1) {
                 printf("%d-1\n", lightVal);
+                printf("North Green\n");
             } else if (lightVal & 2) {
                 printf("%d-2\n", lightVal);
+                printf("North Red\n");
             } else if (lightVal & 3) {
                 printf("%d-3\n", lightVal);
+                printf("East Green\n");
             } else if (lightVal & 4) {
                 printf("%d-4\n", lightVal);
+                printf("East Red\n");
             }
         }
-
+        oldOutput = lightVal;
+        //usleep(FSM[S].Time*10);
 
 
         //SysTick_Wait10ms(FSM[S].Time);   // no need of this line in initial testing
         // use usleep() instead of Syst=Tick_Wait
         //Input = SENSOR;             // read sensors the input value is set in the
         // if statement below
-
+        char oldInput = 0;
         if (inputAvailable()) {
             Input =0;
             scanf("%s" , data);
             printf("you entered %s\n",data);
 /* TODO  Set the input value to 00 or 01 or 10 or 11 binary i.e. 0,1,2,3 decimal depending on the input.
          For example If the user enters N set Input to 2 decimal i.e. 10 binary. */
-            if(*data == 'N'){
+            if(*data == 'N' && oldInput == 0){
                 Input = 1;
             }
-            else if (*data == 'E'){
+            else if (*data == 'E' && oldInput == 0){
                 Input = 2;
             }
-            else if (data == "NE"){
+            //Have we pressed N or E, check if input is opposite of already pressed
+            //Simuates the two buttons at the same time
+            else if ((oldInput == 3 && *data == 'N') || (oldInput == 2 && *data == 'E')){
                 Input = 3;
             }
             else{
                 Input = 0;
             }
+            oldInput = Input;
         }
-        S = FSM[S].Next[Input];     // keep this line as is
+        S = FSM[S].Next[Input];    // keep this line as is
     }
 
 }
