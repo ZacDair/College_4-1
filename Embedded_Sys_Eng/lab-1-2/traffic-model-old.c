@@ -78,18 +78,17 @@ int main(){
             Input =0;
             scanf("%s" , data);
             printf("you entered %s\n",data);
-            printf("oldInput: %d\n", oldInput);
 /* TODO  Set the input value to 00 or 01 or 10 or 11 binary i.e. 0,1,2,3 decimal depending on the input.
          For example If the user enters N set Input to 2 decimal i.e. 10 binary. */
-            if(*data == 'N'){
+            if(*data == 'N' && oldInput == 0){
                 Input = 1;
             }
-            else if (*data == 'E'){
+            else if (*data == 'E' && oldInput == 0){
                 Input = 2;
             }
             //Have we pressed N or E, check if input is opposite of already pressed
             //Simuates the two buttons at the same time
-            else if ((oldInput == 2 && *data == 'N') || (oldInput == 1 && *data == 'E')){
+            else if ((oldInput == 3 && *data == 'N') || (oldInput == 2 && *data == 'E')){
                 Input = 3;
             }
             else{
@@ -97,7 +96,7 @@ int main(){
             }
             oldInput = Input;
         }
-        S = FSM[S].Next[Input];   // keep this line as is
+        S = FSM[S].Next[Input];    // keep this line as is
     }
 
 }
