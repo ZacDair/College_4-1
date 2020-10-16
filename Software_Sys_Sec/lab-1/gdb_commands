@@ -1,0 +1,29 @@
+A few useful commands for GDB debugging of C programs.
+
+Firstly running GDB, requires *.o files (gcc -o output.o input-c)
+
+Once open:
+
+run -> runs program
+
+Show and Set assembly language to read:
+show disassembly-flavor 
+set disassembly-flavor intel
+
+disassemble main -> shows assembly code
+
+break *0x----- -> set a breakpoint at that address
+
+info registers -> shows contents of registers
+c -> resumes the program
+si -> executes line by line
+
+We can also defines functions to save time with commands
+define hook-stop
+>info registers
+>x/24x $rsp
+>x/2i $rip
+>end
+
+hook-stop can then be used in debugging
+info proc mappings -> shows state of mapped memory
