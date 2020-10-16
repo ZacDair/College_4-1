@@ -1,0 +1,22 @@
+Thursday 8th October
+First FYP Supervisor meeting
+Prepared two slides, one explaining the problem, the other research to date.
+
+Work done between meetings:
+1) Found AI a modern approach and began reading into chapt 22-23
+2) Further research into papers and context
+3) Attempted to define the project a bit more, unsure if context analysis is just theme extraction etc
+4) Read into Alexa slot context
+
+Thursday 15th October
+Second Supervisor meeting
+Need to get to the base of the project
+Define NLP on a low level, work with base techniques to get familiar
+High level definition of context
+Read into emotional project papers
+Setup AIMA and work through some tasks
+Write up of what the problem is
+Write up background research to date
+Project seems to be swaying towards emotion and context analysis of speech,
+where we transcribe the speech to text, use NLP on text, use processing methods on the audio cues,
+for a goal... I'm not fully sure about yet
