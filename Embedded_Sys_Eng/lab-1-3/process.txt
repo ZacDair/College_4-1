@@ -1,0 +1,36 @@
+Part 1) Hello World printing with QEMU
+Steps:
+1. Create a test.c (contents on blogpost)
+2. Create startup.s (contents on blogpost)
+3. Create test.ld (contents on blogpost)
+4. Run the following commands:
+	arm-none-eabi-as -mcpu=arm926ej-s -g startup.s -o startup.o
+	arm-none-eabi-gcc -c -mcpu=arm926ej-s -g test.c -o test.o
+	arm-none-eabi-ld -T test.ld test.o startup.o -o test.elf
+	arm-none-eabi-objcopy -O binary test.elf test.bin
+
+This creates the test.elf and test.bin files
+Make sure QEMU is installed (lab 0 tasks)
+
+To run the program use the following command:
+qemu-system-arm -M versatilepb -m 128M -nographic -kernel test.bin
+
+Hello World should be printed in the terminal
+(CTRL+A then X to exit the QEMU)
+
+Part 2) Input and Printing with QEMU
+Steps:
+1. Create or edit test.c (change to suit contents on blogpost)
+2. Run the following commands: 
+	arm-none-eabi-gcc -c -mcpu=arm926ej-s test.c -o test.o
+	arm-none-eabi-as -mcpu=arm926ej-s startup.s -o startup.o
+	arm-none-eabi-ld -T test.ld test.o startup.o -o test.elf
+	arm-none-eabi-objcopy -O binary test.elf test.bin
+
+To run the program use the following command:
+qemu-system-arm -M versatilepb -m 128M -kernel test.bin -serial stdio
+
+Now any user input will be converted to uppercase and printed to the terminal
+
+Part 3) Adding the traffic system code
+Take the required parts of the previous traffic light code and combine it with the user input and printing done above.
