@@ -70,13 +70,13 @@ static void uart_echo(pl011_T *uart) {
  int lightVal = FSM[S].Out;
  if(lightVal != OldOutput) {
   if (lightVal == 33) {
-   print_uart0("North Green\n");
+   print_uart0("North Green, East Red\n");
   } else if (lightVal == 34) {
-   print_uart0("North Red\n");
+   print_uart0("North Yellow, East Red\n");
   } else if (lightVal == 12) {
-   print_uart0("East Green\n");
+   print_uart0("North Red, East Green\n");
   } else if (lightVal == 20) {
-   print_uart0("East Red\n");
+   print_uart0("North Red, East Yellow\n");
   }
  }
  OldOutput = lightVal;

@@ -52,13 +52,13 @@ int main(){
         int lightVal = FSM[S].Out;
         if(lightVal != oldOutput) {
             if (lightVal == 33) {
-                printf("North Green\n");
+                printf("North Green, East Red\n");
             } else if (lightVal == 34) {
-                printf("North Red\n");
+                printf("North Yellow, East Red\n");
             } else if (lightVal == 12) {
-                printf("East Green\n");
+                printf("North Red, East Green\n");
             } else if (lightVal == 20) {
-                printf("East Red\n");
+                printf("North Red, East Yellow\n");
             }
         }
         oldOutput = lightVal;
