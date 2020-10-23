@@ -1,0 +1,6 @@
+FYP Layout Comparison
+Chapter 1 (3 pages)	- Intro
+Chapter 2 (20 pages)	- Background
+Chapter 3 (6 pages)	- Problem
+Chapter 4 (15 pages)	- Solution Approach
+Chapter 5 (2-3 pages)	- Conclusions
