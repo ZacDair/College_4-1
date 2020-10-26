@@ -1,5 +1,7 @@
 import numpy as np
 import pandas as pd
+from sklearn.model_selection import train_test_split
+import math
 
 # Read in our data
 file = "titanic.csv"
@@ -8,10 +10,6 @@ data = pd.read_csv(file, usecols=columns)
 
 # Convert our sex feature to numerical (female = 0, male = 1)
 data['Sex'].replace({'female': 0, 'male': 1}, inplace=True)
-
-# Split data into features(x) and target(y)
-x = data[["Sex", "Pclass"]]
-y = data["Survived"]
 
 # Split data into training and test data
 train, test = train_test_split(data, test_size=0.2)
@@ -58,3 +56,55 @@ maleSurvivor * class 1 survivor     pCasulaty
 -------------------------------- > ----------
 maleCasualty * class 1 clasuaty     pSurvivor   
 '''
+truePositive = 0
+trueNegative = 0
+falsePositive = 0
+falseNegative = 0
+testData = test.to_numpy()
+for x in testData:
+    if x[0] == 1:
+        # Male
+        sexS = pMaleSurvived
+        sexC = pMaleCasualty
+    else:
+        # Female
+        sexS = pFemaleSurvived
+        sexC = pFemaleCasualty
+
+    if x[1] == 1:
+        # pClass 1
+        pClassS = pClass1Survived
+        pClassC = pClass1Casualty
+    elif x[2] == 2:
+        # pClass 2
+        pClassS = pClass2Survived
+        pClassC = pClass2Casualty
+    else:
+        # pClass 3
+        pClassS = pClass3Survived
+        pClassC = pClass3Casualty
+    val1 = math.exp(math.log(sexS) + math.log(pClassS))
+    val2 = math.exp(math.log(sexC) + math.log(pClassC))
+    posterior = val1/val2
+
+    if posterior > pCasualty/pSurvived:
+        classification = 0  # Survived
+    else:
+        classification = 1  # Casualty
+
+    if x[2] == 1 and classification == 1:
+        truePositive = truePositive + 1
+    elif x[2] == 0 and classification == 0:
+        trueNegative = trueNegative + 1
+    elif x[2] == 1 and classification == 0:
+        falseNegative = falseNegative + 1
+    elif x[2] == 0 and classification == 1:
+        falsePositive = falsePositive + 1
+
+    '''
+    print("Actual Classification:", x[2])
+    print("Model Classification:", classification)
+    '''
+print("Confusion Matrix:")
+print(truePositive, trueNegative)
+print(falsePositive, falseNegative)
