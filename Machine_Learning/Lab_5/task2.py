@@ -83,14 +83,17 @@ for x in testData:
         # pClass 3
         pClassS = pClass3Survived
         pClassC = pClass3Casualty
+
     val1 = math.exp(math.log(sexS) + math.log(pClassS))
     val2 = math.exp(math.log(sexC) + math.log(pClassC))
+    # val1 = sexS * pClassS
+    # val2 = sexC * pClassC
     posterior = val1/val2
 
     if posterior > pCasualty/pSurvived:
-        classification = 0  # Survived
+        classification = 1  # Survived
     else:
-        classification = 1  # Casualty
+        classification = 0  # Casualty
 
     if x[2] == 1 and classification == 1:
         truePositive = truePositive + 1
@@ -106,5 +109,7 @@ for x in testData:
     print("Model Classification:", classification)
     '''
 print("Confusion Matrix:")
-print(truePositive, trueNegative)
-print(falsePositive, falseNegative)
+print("TP FN")
+print("FP TN")
+print(truePositive, falseNegative)
+print(falsePositive, trueNegative)
