@@ -2,7 +2,9 @@ import math
 
 import pandas as pd
 import numpy as np
+import time
 
+startTime = time.time()
 
 # Tasks 1: Reading, Splitting and Returning train and test data
 def reviewTestTrainSplit(filename):
@@ -58,7 +60,7 @@ def cleanAndSplitReviews(reviewData, minWordLength, minWordCount):
     words = pd.DataFrame(wordCount.items(), columns=['Word', 'Count'])
 
     # Removes all words less than the min length, leaving only the words above the min length
-    words = words[words['Word'].str.len() > minWordLength]
+    words = words[words['Word'].str.len() >= minWordLength]
 
     # Removes all words that occur less than the min occurrence
     words = words[words['Count'] > minWordCount]
@@ -69,6 +71,7 @@ def cleanAndSplitReviews(reviewData, minWordLength, minWordCount):
 # Task 3
 def countFeatureFrequencies(reviewSet, wordSet):
     # if we can populate the dict initially, we can remove the else check and the bottom if for adding 0s
+    #df.isin may replace this for speed
     wordCount = {}
     reviewSet = reviewSet.to_numpy()
     for review in reviewSet:
@@ -88,14 +91,18 @@ def countFeatureFrequencies(reviewSet, wordSet):
 
 
 # Task 4
-def calculateLikelihoodsAndPriors(positiveFF, negativeFF, smoothingVal, tpCount, tnCount, tCount):
+def calculateLikelihoodsAndPriors(positiveFF, negativeFF, smoothingVal, tpCount, tnCount):
     positiveLikelihoods = {}
+    posT = 0
     for x in positiveFF:
-        positiveLikelihoods[x] = (positiveFF[x] + smoothingVal) / (tpCount + (smoothingVal * (len(positiveFF))))
+        positiveLikelihoods[x] = (positiveFF[x] + smoothingVal) / (sum(positiveFF.values()) + (smoothingVal * (len(positiveFF))))
+        # positiveLikelihoods[x] = positiveFF[x] / (sum(positiveFF.values()))
+        posT = posT + positiveFF[x]
     negativeLikelihoods = {}
     for x in negativeFF:
-        negativeLikelihoods[x] = (negativeFF[x] + smoothingVal) / (tnCount + (smoothingVal * (len(negativeFF))))
-    return positiveLikelihoods, negativeLikelihoods, (tpCount/tCount), (tnCount/tCount)
+        negativeLikelihoods[x] = (negativeFF[x] + smoothingVal) / (sum(negativeFF.values()) + (smoothingVal * (len(negativeFF))))
+        # negativeLikelihoods[x] = negativeFF[x] / (positiveFF[x] + negativeFF[x])
+    return positiveLikelihoods, negativeLikelihoods, (tpCount/(tpCount+tnCount)), (tnCount/(tpCount+tnCount))
 
 
 # Task 5
@@ -123,26 +130,29 @@ def classifyReview(testReview, posL, negL, posPrior, negPrior):
     return classification
 
 
+t1 = time.time()
 trainData, trainLabels, testData, testLabels = reviewTestTrainSplit("movie_reviews.xlsx")
-wordList, trainData = cleanAndSplitReviews(trainData, 6, 100)
-
+t2 = time.time()
+wordList, trainData = cleanAndSplitReviews(trainData, 10, 100)
+t3 = time.time()
 # Task 3 (positive frequency)
 positiveFreq = countFeatureFrequencies(trainData[trainLabels == 'positive'], wordList)
 # Task 3 (negative frequency)
 negativeFreq = countFeatureFrequencies(trainData[trainLabels == 'negative'], wordList)
-
+t4 = time.time()
 # Task 4 (extra len lines to get counts)
 posReviewCount = len(trainLabels[trainLabels == 'positive'])
 negReviewCount = len(trainLabels[trainLabels == 'negative'])
-totalReviewCount = len(trainLabels)
 
 # Gets the likelihoods and priors
-posLikelihood, negLikelihood, posP, negP = calculateLikelihoodsAndPriors(positiveFreq, negativeFreq, 1, posReviewCount, negReviewCount, totalReviewCount)
+posLikelihood, negLikelihood, posP, negP = calculateLikelihoodsAndPriors(positiveFreq, negativeFreq, 1, posReviewCount, negReviewCount)
+t5 = time.time()
 classifications = []
 for review in testData:
     classifications.append(classifyReview(review, posLikelihood, negLikelihood, posP, negP))
 correct = 0
 wrong = 0
+t6 = time.time()
 for a, b in zip(classifications, testLabels):
     if a == 0:
         a = 'negative'
@@ -156,3 +166,12 @@ for a, b in zip(classifications, testLabels):
         wrong = wrong + 1
 print("Out of:", correct+wrong)
 print(correct, "correct and", wrong, "wrong classifications")
+print("Completion took", time.time()-startTime, "seconds")
+# Old completion time: 12.61220908164978 seconds
+print("Specific Times:")
+print("Initial Data took: ", t2-t1, "seconds")
+print("Word List took: ", t3-t2, "seconds")
+print("Feature Frequency took: ", t4-t3, "seconds")
+print("Likelihoods took: ", t5-t4, "seconds")
+print("Classifications took: ", t6-t5, "seconds")
+print("Final Priting took: ", time.time()-t6, "seconds")
