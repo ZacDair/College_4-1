@@ -1,5 +1,4 @@
 import math
-
 import pandas as pd
 import numpy as np
 import time
@@ -62,8 +61,7 @@ def cleanAndSplitReviews(reviewData, minWordLength, minWordCount):
     words = words[words['Word'].str.len() >= minWordLength]
 
     # Removes all words that occur less than the min occurrence
-    words = words[words['Count'] > minWordCount]
-
+    words = words[words['Count'] >= minWordCount]
     return words['Word'].to_numpy(), reviewData  # Would have just returned the pandas frame... might still
 
 
