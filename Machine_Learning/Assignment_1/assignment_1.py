@@ -198,3 +198,15 @@ for i in range(k):
 for x in modelResults:
     print(x)
 print("Mean Accuracy: ", str(round((accuracyTotal/len(modelResults)*100), 2))+"%")
+'''
+What's left:
+
+optimization for cleaning and wordlist function
+optimization for frequency counting function
+
+Select the best word size model (maybe retrain on full data set)
+Run best model on test data (maybe break train data in k-folds to train + test)
+Confusion Matrix 
+Percentage of True Pos, True Neg, False Pos, False Neg
+Accuracy Score
+'''
