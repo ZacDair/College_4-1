@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import time
 
+startTime = time.time()
 
 # Tasks 1: Reading, Splitting and Returning train and test data
 def reviewTestTrainSplit(filename):
@@ -129,72 +130,47 @@ def classifyReview(testReview, posL, negL, posPrior, negPrior):
     return classification
 
 
+t1 = time.time()
 trainData, trainLabels, testData, testLabels = reviewTestTrainSplit("movie_reviews.xlsx")
-trainData = trainData.sample(frac=1)  # Shuffles data
-k = 10
-kSize = 2500
-index = 0
-modelResults = []
-accuracyTotal = 0
-for i in range(k):
-    startTime = time.time()
-    # Gets our next kSize entries of the train data
-    kData = trainData[index:index+kSize]
+t2 = time.time()
+wordList, trainData = cleanAndSplitReviews(trainData, 10, 100)
+t3 = time.time()
+# Task 3 (positive frequency)
+positiveFreq = countFeatureFrequencies(trainData[trainLabels == 'positive'], wordList)
+# Task 3 (negative frequency)
+negativeFreq = countFeatureFrequencies(trainData[trainLabels == 'negative'], wordList)
+t4 = time.time()
+# Task 4 (extra len lines to get counts)
+posReviewCount = len(trainLabels[trainLabels == 'positive'])
+negReviewCount = len(trainLabels[trainLabels == 'negative'])
 
-    # Keeps track of our index
-    index = index + kSize
-
-    wordList, kData = cleanAndSplitReviews(kData, i+1, 100)
-
-    # Task 3 (positive frequency)
-    positiveFreq = countFeatureFrequencies(kData[trainLabels == 'positive'], wordList)
-    # Task 3 (negative frequency)
-    negativeFreq = countFeatureFrequencies(kData[trainLabels == 'negative'], wordList)
-
-    # Task 4 (extra len lines to get counts)
-    posReviewCount = len(kData[trainLabels == 'positive'])
-    negReviewCount = len(kData[trainLabels == 'negative'])
-
-    # Gets the likelihoods and priors
-    posLikelihood, negLikelihood, posP, negP = calculateLikelihoodsAndPriors(positiveFreq, negativeFreq, 1, posReviewCount, negReviewCount)
-
-    classifications = []
-    for review in testData:
-        classifications.append(classifyReview(review, posLikelihood, negLikelihood, posP, negP))
-    correct = 0
-    wrong = 0
-    failed = 0
-    confMatrix = {"tp": 0, "tn": 0, "fp": 0, "fn": 0}
-    for a, b in zip(classifications, testLabels):
-        if a == 0:
-            a = 'negative'
-        elif a == 1:
-            a = 'positive'
-        else:
-            a = 'undefined'
-            failed = failed + 1
-        if a == b:
-            correct = correct + 1
-            if a == "positive":
-                confMatrix["tp"] = confMatrix["tp"] + 1
-            elif a == "negative":
-                confMatrix["tn"] = confMatrix["tn"] + 1
-        else:
-            wrong = wrong + 1
-            if a == "positive":
-                confMatrix["fp"] = confMatrix["fp"] + 1
-            elif a == "negative":
-                confMatrix["fn"] = confMatrix["fn"] + 1
-    print("Model using", i+1, "as min word length")
-    print("Out of:", correct+wrong)
-    print(correct, "correct,", wrong, "wrong and,", failed, "failed classifications")
-    timeTook = time.time()-startTime
-    print("Completion took", timeTook , "seconds")
-    acc = correct/(correct+wrong)
-    accString = str(round(acc*100, 2))+"%"
-    print(accString)
-    accuracyTotal = accuracyTotal + correct/(correct+wrong)
-    modelResults.append(["Word Len: "+str(i+1), "Accuracy: "+accString,"Failed:"+str(failed),"Matrix:" + str(confMatrix), "Time Taken: "+str(timeTook)])
-for x in modelResults:
-    print(x)
-print("Mean Accuracy: ", str(round((accuracyTotal/len(modelResults)*100), 2))+"%")
+# Gets the likelihoods and priors
+posLikelihood, negLikelihood, posP, negP = calculateLikelihoodsAndPriors(positiveFreq, negativeFreq, 1, posReviewCount, negReviewCount)
+t5 = time.time()
+classifications = []
+for review in testData:
+    classifications.append(classifyReview(review, posLikelihood, negLikelihood, posP, negP))
+correct = 0
+wrong = 0
+t6 = time.time()
+for a, b in zip(classifications, testLabels):
+    if a == 0:
+        a = 'negative'
+    elif a == 1:
+        a = 'positive'
+    else:
+        a = 'undefined'
+    if a == b:
+        correct = correct + 1
+    else:
+        wrong = wrong + 1
+print("Out of:", correct+wrong)
+print(correct, "correct and", wrong, "wrong classifications")
+print("Specific Times:")
+print("Initial Data took: ", t2-t1, "seconds")
+print("Word List took: ", t3-t2, "seconds")
+print("Feature Frequency took: ", t4-t3, "seconds")
+print("Likelihoods took: ", t5-t4, "seconds")
+print("Classifications took: ", t6-t5, "seconds")
+print("Final Printing took: ", time.time()-t6, "seconds")
+print("Completion took", time.time()-startTime, "seconds")
