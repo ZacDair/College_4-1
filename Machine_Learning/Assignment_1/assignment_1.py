@@ -129,12 +129,10 @@ def classifyReview(testReview, posL, negL, posPrior, negPrior):
         classification = random.choice(["positive", "negative"])
     else:
         # Get the sum of all positive and then negative likelihoods
-        val1 = sum([posL[x] for x in commonWords])
-        val2 = sum([negL[x] for x in commonWords])
+        positiveLogLikelihood = sum([math.log(posL[x]) for x in commonWords])
+        negativeLogLikelihood = sum([math.log(negL[x]) for x in commonWords])
 
-        result = math.exp(math.log(val1) - math.log(val2))
-
-        if result > negPrior / posPrior:
+        if positiveLogLikelihood - negativeLogLikelihood > math.log(negPrior) - math.log(posPrior):
             classification = "positive"  # Positive
         else:
             classification = 'negative'
@@ -142,10 +140,10 @@ def classifyReview(testReview, posL, negL, posPrior, negPrior):
 
 
 # This function encompasses tasks 2-5
-def trainAndRunModel(minLen, train_Data, test_Data):
+def trainAndRunModel(minLen, train_Data, test_Data, test_Labels):
     sTime = time.time()
     # Task 2: pre-processing and extract relevant features
-    wordList, data = cleanAndSplitReviews(train_Data, minLen, 200)
+    wordList, data = cleanAndSplitReviews(train_Data, minLen, 100)
     # Task 3: (positive frequency)
     positiveFreq = countFeatureFrequencies(data[trainLabels == 'positive'], wordList)
     # Task 3: (negative frequency)
@@ -167,7 +165,7 @@ def trainAndRunModel(minLen, train_Data, test_Data):
     wrongCount = 0
     confMatrix = {"tp": 0, "tn": 0, "fp": 0, "fn": 0}
     # Cycle through the classifications and the actual labels
-    for a, b in zip(classifications, testLabels):
+    for a, b in zip(classifications, test_Labels):
         if a == b:
             correctCount = correctCount + 1
             if a == "positive":
@@ -203,7 +201,8 @@ for train_index, test_index in kf.split(trainData):
     # Task 6: Trains and tests our model
     trainingData = trainData.iloc[train_index]
     testingData = trainData.iloc[test_index]
-    startTime, correct, wrong, acc, cMatrix = trainAndRunModel(minWordLen, trainingData, testingData)
+    actualLabels = trainLabels.iloc[test_index]
+    startTime, correct, wrong, acc, cMatrix = trainAndRunModel(minWordLen, trainingData, testingData, actualLabels)
     accString = str(round(acc * 100, 2)) + "%"
     # Task 6: Add accuracy to total for mean calculation
     accuracyTotal = accuracyTotal + acc
@@ -234,8 +233,8 @@ print("Using a minimum word length of", bestMinLen)
 print("Mean Accuracy: ", str(round((accuracyTotal/len(modelResults)*100), 2))+"%")
 
 # Task 6: Retrain the model on the full dataset and test dataset
-print("\nFinal Model")
-startTime, correct, wrong, acc, cMatrix = trainAndRunModel(bestMinLen, trainData, testData)
+print("\nFinal Model: Minimum Word Length is", bestMinLen)
+startTime, correct, wrong, acc, cMatrix = trainAndRunModel(bestMinLen, trainData, testData, testLabels)
 
 # Task 6: Confusion Matrix
 print("Confusion Matrix:", cMatrix)
