@@ -56,7 +56,7 @@ public class PersonServiceImplementation implements PersonService {
 
     public int countByOccupation(String occupation) {
         return personDao.countByOccupation(occupation);
-    } //TEST ME
+    }
 
     public int countByAge(int age) {
         return personDao.countByAge(age);
