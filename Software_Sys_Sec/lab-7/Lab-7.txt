@@ -1,0 +1,27 @@
+Hardcoded credentials found in deploy.sql
+    Database Login Details:
+    'admin','bcd86545c5903856961fa21b914c5fe4
+
+    Signature for encryption in jwt.php
+    "donth4ckmebr0"
+
+Information Leak POST requests on the login.php
+    Login Details exposed from the POST requests ?
+    Another INFO leak in the set cookie in register.php ?
+
+Weak encrypytion found in jwt.php (BASE64) ?
+Weak encryption found in users.php, database handles hashing possibly the plain text versions of the crednetials may be found in logs on their way to the DB
+Weak encryption method (md5)
+
+Cross Site Scripting flaw in index.php
+the destination from the form can be exploited to execute other php code
+
+CSRF ?
+
+Directory Listing
+    relies on the username for identifying the path of where to look for files, so using usernames .. etc could show parent directories
+
+
+
+
+For the answer issues look into the final few pages of the lab 7 pdf
