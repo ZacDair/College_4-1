@@ -1,0 +1,1 @@
+Lab 8 was familarizing with burp suite on the SamuraiWTF VM
