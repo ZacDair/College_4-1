@@ -1,0 +1,20 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<div th:fragment="heading">
+    <h1 th:text="#{heading.welcome}"></h1>
+    <!--
+    <nav>
+        <a th:text = "#{fragments.home}" th:href="@{/}">Home</a>
+        <a th:text = "#{fragments.counties}" th:href="@{counties}">Counties</a>
+        <a th:href="@{/newcounty}" th:text="#{fragments.newcounty}">New county</a>
+        <a th:href="@{/newtown}" th:text="#{fragments.newtown}">New county</a>
+    </nav>
+    -->
+</div>
+
+<div th:fragment="languages">
+    <footer th:with="currentUrl=(${@thymeleafBean.removeLangFromUrl()})">
+        <a th:href="@{${currentUrl}(lang=ie)}">IE</a>
+        <a th:href="@{${currentUrl}(lang=fr)}">FR</a>
+    </footer>
+</div>

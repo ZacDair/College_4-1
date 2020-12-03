@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css"/>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+</head>
+<body>
+    <header th:insert="fragments :: heading"></header>
+
+    <main>
+        <h1 th:text="#{index.welcome}">DEFAULT TEXT</h1>
+    </main>
+
+    <footer th:insert="fragments :: languages"></footer>
+
+    <!-- Pre-fragment HTML code -->
+    <!--
+    <main>
+        <header>
+            <h1 th:text="#{heading.welcome}"></h1>
+        </header>
+        <h1>
+            <span th:text="#{index.welcome}"></span><span th:text="${name}">NAME</span>
+        </h1>
+    </main>
+    <footer th:with="currentUrl=(${@thymeleafBean.removeLangFromUrl()})">
+        <a th:href="@{${currentUrl}(lang=ie)}">IE</a>
+        <a th:href="@{${currentUrl}(lang=fr)}">FR</a>
+    </footer>
+    -->
+</body>
+</html>

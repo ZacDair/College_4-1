@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css"/>
+    <meta charset="UTF-8">
+    <title>Towns</title>
+</head>
+<body>
+
+    <h1>Towns in <span th:text="${county.countyName}">County PLACEHOLDER</span> </h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Town</th>
+        </tr>
+        <tr th:each="town:${county.countyTowns}" th:object="${town}">
+            <td th:text="*{townId}">Town ID</td>
+            <td th:text="*{townName}">Town NAME</td>
+        </tr>
+    </table>
+</body>
+</html>
