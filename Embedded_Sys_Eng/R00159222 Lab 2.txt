@@ -1,0 +1,17 @@
+The following 3 directories contain code relating to their specific questions for lab 2.
+
+lab-2-1
+lab-2-2
+lab-2-3
+
+For question 1:
+I have kept all of the original files, and made the required edits to t.c and vid.c to allow pacman to move without leaving a trail
+I used movement keys W,A,S,D (Up, Left, Down, Right)
+The MK script works as originally for running the program
+
+For question 2:
+My overview of the abstact syntax tree is in the pdf file
+
+For question 3:
+I included my valley and increasingPeak functions inside the peak.c file, the testbench.c has also been edited to showcase those functions
+running the a.o file, the peak, valley and increasingPeak functions are tested.
