@@ -79,16 +79,6 @@ th{
     color:red;
 }
 
-.languages {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background-color: #bfeeff;
-    color: white;
-    text-align: center;
-}
-
 .X {
     color:red;
 }

@@ -8,17 +8,16 @@
 <body>
     <header th:insert="fragments :: heading"></header>
     <form method="POST" th:action="@{/findfilm}" th:object="${findFilmForm}">
-        <label for="countyName" th:text="#{newCounty.countyName}"></label>
-        <input id="countyName" type="text" th:field="*{filmReleaseYear}"/>
+        <label for="filmYear" th:text="#{newFilm.filmReleaseYear}"></label>
+        <input id="filmYear" type="text" th:field="*{filmReleaseYear}"/>
 
         <div th:if="${problem}" class="error">
-            <span th:text="${countyName}"></span><span th:text="#{newCounty.alreadyExists}"></span>
+            <span th:text="${filmError}"></span><span th:text="#{error.notFoundError}"></span>
         </div>
 
         <div th:if="${#fields.hasErrors('filmReleaseYear')}" class="error" th:errors="*{filmReleaseYear}"></div>
 
-        <br><input type="submit" th:value="#{newCounty.submit}"/>
+        <br><input type="submit" th:value="#{film.submit}"/>
     </form>
-    <footer th:insert="fragments :: languages"></footer>
 </body>
 </html>

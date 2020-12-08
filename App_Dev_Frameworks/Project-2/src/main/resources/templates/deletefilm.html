@@ -22,7 +22,7 @@
                 <td><a th:text="*{filmName}" th:href="'/film/'+*{filmId}">FILM TITLE</a></td>
                 <td th:text="*{filmReleaseYear}">FILM RELEASE YEAR</td>
                 <td><a th:text="*{filmDirector.directorFirstName +' '+ filmDirector.directorLastName}" th:href="'/director/'+*{filmDirector.directorId}">DIRECTOR NAME</a></td>
-                <td><a th:text="X" th:href="'/delete/film/'+*{filmId}">X</a></td>
+                <td><a class=X th:text="X" th:href="'/delete/film/'+*{filmId}">X</a></td>
             </tr>
         </table>
     </main>

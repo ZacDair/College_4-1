@@ -1,15 +1,16 @@
 package com.warner_dair;
 
+
+import com.warner_dair.service.UserDetailsServiceImplmentation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -19,26 +20,49 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    // Create our own instance of Spring's user details but creating some UserDetails objects and
-    // creating an in-memory user details manager from the.
+    // Old in memory users (can be removed)
+    /*
     @Bean
     @Override
     protected UserDetailsService userDetailsService()
     {
         String encodedPassword = passwordEncoder().encode("password");
-        UserDetails user1 = User.withUsername("user").password(encodedPassword).roles("USER").build();
-        UserDetails user2 = User.withUsername("admin").password(encodedPassword).roles("ADMIN").build();
-        return new InMemoryUserDetailsManager(user1, user2);
+        UserDetails user = User.withUsername("user").password(encodedPassword).roles("USER").build();
+        UserDetails admin = User.withUsername("admin").password(encodedPassword).roles("ADMIN").build();
+        return new InMemoryUserDetailsManager(user, admin);
     }
+    */
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/images/**", "/css/**", "/", "/directors", "/director/**", "/films", "/film/**").permitAll()
+                .antMatchers("/images/**", "/css/**", "/", "/directors", "/director/**", "/films", "/film/**", "/login/**").permitAll()
                 .antMatchers("/newdirector", "/newfilm", "/editfilm").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/delete/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
+                .antMatchers("/api/**", "/myapi/**").hasAnyRole("ADMIN", "API")
+                .anyRequest().authenticated();
+
+        http.formLogin()
+                .loginPage("/login")
+                .loginProcessingUrl("/log_me_in")
                 .and()
-                .formLogin().and().httpBasic();
+                .logout()
+                .logoutUrl("/log_me_out")
+                .logoutSuccessUrl("/")
+                .and()
+                .httpBasic()
+                .and()
+                .exceptionHandling().accessDeniedPage("/403");
+
+        http.csrf().disable();
+
+    }
+
+    @Autowired
+    UserDetailsService userDetailsService;
+
+    @Override
+    public void configure(AuthenticationManagerBuilder authBuilder) throws Exception{
+        authBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 }

@@ -4,9 +4,12 @@ import com.warner_dair.dao.DirectorDao;
 import com.warner_dair.dao.FilmDao;
 import com.warner_dair.entities.Director;
 import com.warner_dair.entities.Film;
+import com.warner_dair.entities.CustomUser;
+import com.warner_dair.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Profile("dev")
@@ -18,6 +21,12 @@ public class ApplicationDev implements CommandLineRunner {
 
 	@Autowired
 	FilmDao filmDao;
+
+	@Autowired
+	PasswordEncoder passwordEncoder;
+
+	@Autowired
+	UserService userService;
 
 	
 	@Override
@@ -59,5 +68,13 @@ public class ApplicationDev implements CommandLineRunner {
 		filmDao.save(starWarsII);
 		filmDao.save(starWarsIII);
 
+		// Populate our DB with our custom user entities
+		CustomUser adminCustomUser = new CustomUser("admin@admin.ie", passwordEncoder.encode("password"), "ADMIN");
+		CustomUser apiCustomUser = new CustomUser("api@api.ie", passwordEncoder.encode("password"), "API");
+		CustomUser standardCustomUser = new CustomUser("user@user.ie", passwordEncoder.encode("password"), "USER");
+
+		userService.save(adminCustomUser);
+		userService.save(apiCustomUser);
+		userService.save(standardCustomUser);
 	}
 }

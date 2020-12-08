@@ -4,7 +4,10 @@ package com.dair.controllers;
 import com.dair.entities.Director;
 import com.dair.entities.Film;
 import com.dair.forms.FindFilmForm;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,10 +21,37 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Controller
 public class MyController {
+
+    HttpHeaders createHeaders(String username, String password)
+    {
+        /*
+         * A HttpHeader is a data structure representing a HTTP request or response header.
+         * It maps String header names to a list of String values (Map).
+         */
+        return new HttpHeaders() {
+            {
+                // create a string from the given username and password
+                String auth = username + ":" + password;
+                // convert the string to a byte array
+                byte[] encodeStringIntoBytes = auth.getBytes(StandardCharsets.UTF_8);
+                // encode the binary data to ASCII text.
+                byte[] encodedAuth = Base64.encodeBase64(encodeStringIntoBytes);
+                // convert the encoded byte array to a string with "Basic" at the start
+                String authHeader = "Basic " + new String( encodedAuth );
+                // set --> sets the value of "Authorization" to authHeader
+                set(HttpHeaders.AUTHORIZATION, authHeader);
+                // Thus the authorisation data can be sent to the REST API for authorisation/authentication
+            }};
+    }
+
+    private String USERNAME = "api@api.ie";
+    private String PASSWORD = "password";
+    private HttpHeaders headers = createHeaders(USERNAME, PASSWORD);
 
     // Find all films by release year
     @GetMapping("/findfilm")
@@ -38,10 +68,9 @@ public class MyController {
         try {
             RestTemplate restTemplate = new RestTemplate();
             String URL = "http://localhost:8080/myapi/film/by/year/"+findFilmForm.getFilmReleaseYear();
-            System.out.println(URL);
             ResponseEntity<List<Film>> response = restTemplate.exchange(URL,
                     HttpMethod.GET,
-                    null,
+                    new HttpEntity<>(this.headers),
                     new ParameterizedTypeReference<>() {
                     });
 
@@ -49,7 +78,7 @@ public class MyController {
             return "films";
         }
         catch (HttpClientErrorException exception){
-            redirectAttributes.addFlashAttribute("countyName", findFilmForm.getFilmReleaseYear());
+            redirectAttributes.addFlashAttribute("filmError", findFilmForm.getFilmReleaseYear());
             redirectAttributes.addFlashAttribute("problem", true);
             return "redirect:/findfilm";
         }
@@ -62,7 +91,10 @@ public class MyController {
     @GetMapping("/directors")
     public String viewDirectors(Model model){
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<List<Director>> response = restTemplate.exchange("http://localhost:8080/myapi/directors", HttpMethod.GET, null, new ParameterizedTypeReference<List<Director>>(){});
+        ResponseEntity<List<Director>> response = restTemplate.exchange("http://localhost:8080/myapi/directors",
+                HttpMethod.GET,
+                new HttpEntity<>(this.headers),
+                new ParameterizedTypeReference<List<Director>>(){});
         model.addAttribute("directors", response.getBody());
         return "directors";
     }
@@ -76,7 +108,7 @@ public class MyController {
             ResponseEntity<Director> responseEntity = restTemplate.exchange(
                     URL,
                     HttpMethod.DELETE,
-                    null,
+                    new HttpEntity<>(this.headers),
                     new ParameterizedTypeReference<Director>(){},
                     directorId
             );
