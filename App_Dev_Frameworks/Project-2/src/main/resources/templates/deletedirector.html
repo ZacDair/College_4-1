@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css"/>
+    <meta charset="UTF-8">
+    <title>Delete a Director</title>
+</head>
+<body>
+    <header th:insert="fragments :: heading"></header>
+    <main>
+        <h2 th:text="#{deleteDirector.heading}">HEADING</h2>
+        <table>
+            <tr>
+                <th th:text="#{director.directorId}">ID</th>
+                <th th:text="#{director.directorName}">Director Name</th>
+                <th th:text="#{deleteDirector.delete}">Delete</th>
+            </tr>
+            <tr th:each="director, iterationCount :${directors}" th:class="${iterationCount.odd}? 'odd'" th:object="${director}">
+                <td th:text="*{directorId}">ID</td>
+                <td><a th:text="*{directorFirstName +' '+ directorLastName}" th:href="'director/'+*{directorId}">DIRECTOR FNAME</a></td>
+                <td><a class=X th:text="X" th:href="'/delete/director/'+*{directorId}">X</a></td>
+            </tr>
+        </table>
+    </main>
+    <footer th:insert="fragments :: languages"></footer>
+</body>
+</html>

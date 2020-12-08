@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css"/>
+    <meta charset="UTF-8">
+    <title>Counties</title>
+</head>
+<body>
+    <header th:insert="fragments :: heading"></header>
+    <!--Alternating Color Rows and links to each towns in county in Table-->
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>County</th>
+        </tr>
+        <tr th:each="county, iterationCount :${counties}" th:class="${iterationCount.odd}? 'odd'" th:object="${county}">
+            <td th:text="*{countyId}">COUNTY ID</td>
+            <td><span th:text="*{countyName}"></span> <a th:href="'/deletecounty/'+*{countyId}">X</a></td>
+        </tr>
+    </table>
+    <footer th:insert="fragments :: languages"></footer>
+</body>
+</html>

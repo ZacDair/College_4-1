@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css"/>
+    <meta charset="UTF-8">
+    <title>Town</title>
+</head>
+<body>
+    <header th:insert="fragments :: heading"></header>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Town</th>
+        </tr>
+        <tr th:object="${town}">
+            <td th:text="*{townId}">Town ID</td>
+            <td th:text="*{townName}">Town NAME</td>
+        </tr>
+    </table>
+    <footer th:insert="fragments :: languages"></footer>
+</body>
+</html>

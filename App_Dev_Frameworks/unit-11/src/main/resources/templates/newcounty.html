@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css"/>
+    <meta charset="UTF-8">
+    <title>New County</title>
+</head>
+<body>
+    <header th:insert="fragments :: heading"></header>
+    <form method="POST" th:action="@{/newcounty}" th:object="${newCountyForm}">
+        <label for="countyName" th:text="#{newCounty.countyName}"></label>
+        <input id="countyName" type="text" th:field="*{newCountyName}"/>
+
+        <div th:if="${duplicateCountyName}" class="error">
+            <span th:text="${duplicateCountyName}"></span><span th:text="#{newCounty.alreadyExists}"></span>
+        </div>
+
+        <div th:if="${#fields.hasErrors('newCountyName')}" class="error" th:errors="*{newCountyName}"></div>
+
+        <br><input type="submit" th:value="#{newCounty.submit}"/>
+    </form>
+    <footer th:insert="fragments :: languages"></footer>
+</body>
+</html>
