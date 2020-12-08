@@ -10,7 +10,6 @@ import javax.validation.constraints.Size;
 public class EditFilmForm {
 
     @NotBlank
-    @Size(min = 2, max = 40)
     private String newFilmName;
 
     @NotNull

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css"/>
+    <meta charset="UTF-8">
+    <title>Counties</title>
+</head>
+<body>
+    <header th:insert="fragments :: heading"></header>
+    <!--Alternating Color Rows and links to each towns in county in Table-->
+    <h1>FILMS BY YEAR</h1>
+    <table>
+        <tr>
+            <th>Film ID</th>
+            <th>Film Title</th>
+            <th>Release Year</th>
+            <th>Director</th>
+        </tr>
+        <tr th:each="film, iterationCount :${films}" th:class="${iterationCount.odd}? 'odd'" th:object="${film}">
+            <td th:text="*{filmId}">FILM ID</td>
+            <td><a th:text="*{filmName}">FILM TITLE</a></td>
+            <td th:text="*{filmReleaseYear}">FILM RELEASE YEAR</td>
+        </tr>
+    </table>
+    <footer th:insert="fragments :: languages"></footer>
+</body>
+</html>

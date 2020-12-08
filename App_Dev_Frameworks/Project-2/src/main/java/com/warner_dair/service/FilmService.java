@@ -13,4 +13,8 @@ public interface FilmService {
     boolean changeFilmName(String newFilmName, int filmId);
 
     Film findFilmById(int filmId);
+
+    boolean deleteFilm(int filmId);
+
+    List<Film> findFilmsByFilmReleaseYear(int releaseYear);
 }

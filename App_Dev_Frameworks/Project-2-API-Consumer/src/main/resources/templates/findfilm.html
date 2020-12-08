@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css"/>
+    <meta charset="UTF-8">
+    <title>New County</title>
+</head>
+<body>
+    <header th:insert="fragments :: heading"></header>
+    <form method="POST" th:action="@{/findfilm}" th:object="${findFilmForm}">
+        <label for="countyName" th:text="#{newCounty.countyName}"></label>
+        <input id="countyName" type="text" th:field="*{filmReleaseYear}"/>
+
+        <div th:if="${problem}" class="error">
+            <span th:text="${countyName}"></span><span th:text="#{newCounty.alreadyExists}"></span>
+        </div>
+
+        <div th:if="${#fields.hasErrors('filmReleaseYear')}" class="error" th:errors="*{filmReleaseYear}"></div>
+
+        <br><input type="submit" th:value="#{newCounty.submit}"/>
+    </form>
+    <footer th:insert="fragments :: languages"></footer>
+</body>
+</html>

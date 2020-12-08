@@ -8,11 +8,10 @@ import javax.validation.constraints.*;
 public class NewFilmForm {
 
     @NotBlank
-    @Size(min = 2, max = 40)
     private String newFilmName;
 
     @NotNull
-    @Min(1888) // Missing max = current year
+    @Min(1888)
     private int newFilmReleaseYear;
 
     @NotNull

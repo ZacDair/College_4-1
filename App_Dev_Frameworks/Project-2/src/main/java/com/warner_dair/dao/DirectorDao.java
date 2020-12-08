@@ -15,4 +15,6 @@ public interface DirectorDao extends JpaRepository<Director, Integer>{
     // Find the director with ID: directorId and the corresponding films
     @Query("SELECT director FROM Director director LEFT JOIN FETCH director.directorFilms films WHERE director.directorId= :directorId")
     Director findDirectorAndFilmsByDirectorId(int directorId);
+
+    boolean existsByDirectorFirstNameAndDirectorLastName(String fname, String lname);
 }

@@ -7,22 +7,26 @@
 </head>
 <body>
     <header th:insert="fragments :: heading"></header>
-    <form method="POST" th:action="@{/newdirector}" th:object="${newDirectorForm}">
-        <label for="directorFirstName" th:text="#{newDirector.directorFirstName}"></label>
-        <input id="directorFirstName" type="text" th:field="*{newDirectorFirstName}"/>
+    <main>
+        <h2 th:text="#{newDirector.heading}"></h2>
+        <br><br>
+        <form method="POST" th:action="@{/newdirector}" th:object="${newDirectorForm}">
+            <label for="directorFirstName" th:text="#{newDirector.directorFirstName}"></label>
+            <input id="directorFirstName" type="text" th:field="*{newDirectorFirstName}"/>
 
-        <label for="directorLastName" th:text="#{newDirector.directorLastName}"></label>
-        <input id="directorLastName" type="text" th:field="*{newDirectorLastName}"/>
+            <label for="directorLastName" th:text="#{newDirector.directorLastName}"></label>
+            <input id="directorLastName" type="text" th:field="*{newDirectorLastName}"/>
 
-        <div th:if="${duplicateDirectorName}" class="error">
-            <span th:text="${duplicateDirectorName}"></span><span th:text="#{newDirector.alreadyExists}"></span>
-        </div>
+            <div th:if="${duplicateDirectorName}" class="error">
+                <span th:text="#{newDirector.alreadyExists}"></span>
+            </div>
 
-        <div th:if="${#fields.hasErrors('newDirectorFirstName')}" class="error" th:errors="*{newDirectorFirstName}"></div>
-        <div th:if="${#fields.hasErrors('newDirectorLastName')}" class="error" th:errors="*{newDirectorLastName}"></div>
+            <div th:if="${#fields.hasErrors('newDirectorFirstName')}" class="error" th:errors="*{newDirectorFirstName}"></div>
+            <div th:if="${#fields.hasErrors('newDirectorLastName')}" class="error" th:errors="*{newDirectorLastName}"></div>
 
-        <br><input type="submit" th:value="#{newDirector.submit}"/>
-    </form>
+            <br><br><input type="submit" th:value="#{newDirector.submit}"/>
+        </form>
+    </main>
     <footer th:insert="fragments :: languages"></footer>
 </body>
 </html>

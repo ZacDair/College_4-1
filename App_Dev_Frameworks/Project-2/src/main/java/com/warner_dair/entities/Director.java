@@ -1,5 +1,6 @@
 package com.warner_dair.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,7 @@ public class Director {
     private String directorLastName;
 
     // One director can have one or more films (One to many relationship)
+    @JsonIgnore
     @OneToMany(mappedBy= "filmDirector", fetch= FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Film> directorFilms = new ArrayList<>();
 

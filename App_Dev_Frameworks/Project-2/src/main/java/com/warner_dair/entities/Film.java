@@ -1,5 +1,6 @@
 package com.warner_dair.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,7 @@ public class Film {
 
     @ManyToOne
     @JoinColumn(nullable = false)
+    @JsonIgnore
     private Director filmDirector;
 
     // Custom constructor, as by default the film object will be missing it's ID

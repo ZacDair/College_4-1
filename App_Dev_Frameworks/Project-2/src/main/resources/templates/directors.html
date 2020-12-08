@@ -7,19 +7,19 @@
 </head>
 <body>
     <header th:insert="fragments :: heading"></header>
-    <!--Alternating Color Rows and links to each-->
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-        </tr>
-        <tr th:each="director, iterationCount :${directors}" th:class="${iterationCount.odd}? 'odd'" th:object="${director}">
-            <td th:text="*{directorId}">ID</td>
-            <td><a th:text="*{directorFirstName}" th:href="'director/'+*{directorId}">DIRECTOR FNAME</a></td>
-            <td><a th:text="*{directorLastName}" th:href="'director/'+*{directorId}">DIRECTOR LNAME</a></td>
-        </tr>
-    </table>
+    <main>
+        <h2 th:text="#{directors.heading}">HEADING</h2>
+        <table>
+            <tr>
+                <th th:text="#{director.directorId}">ID</th>
+                <th th:text="#{director.directorName}">Director Name</th>
+            </tr>
+            <tr th:each="director, iterationCount :${directors}" th:class="${iterationCount.odd}? 'odd'" th:object="${director}">
+                <td th:text="*{directorId}">ID</td>
+                <td><a th:text="*{directorFirstName +' '+ directorLastName}" th:href="'director/'+*{directorId}">DIRECTOR FNAME</a></td>
+                </tr>
+        </table>
+    </main>
     <footer th:insert="fragments :: languages"></footer>
 </body>
 </html>

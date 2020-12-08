@@ -19,13 +19,13 @@ public class NewDirectorController {
     @Autowired
     DirectorService directorService;
 
-    @GetMapping("newdirector")
+    @GetMapping("/newdirector")
     public String addDirector(Model model){
         model.addAttribute("newDirectorForm", new NewDirectorForm());
         return "newdirector";
     }
 
-    @PostMapping("newdirector")
+    @PostMapping("/newdirector")
     public String addDirectorPost(@Valid NewDirectorForm newDirectorForm, BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if(bindingResult.hasErrors()){
             return "newdirector";

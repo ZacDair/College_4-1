@@ -11,4 +11,6 @@ public interface DirectorService {
     List<Director> getAllDirectorsAlphabetically();
 
     Director getDirectorById(int directorId);
+
+    boolean deleteDirectorAndFilms(int directorId);
 }

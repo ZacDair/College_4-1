@@ -18,4 +18,6 @@ public interface FilmDao extends JpaRepository<Film, Integer>{
     @Query("UPDATE Film film SET film.filmName = :newFilmName WHERE film.filmId = :filmId")
     void changeFilmName(@Param("newFilmName") String newFilmName, @Param("filmId") int filmId);
 
+    List<Film> findAllByFilmReleaseYear(int filmReleaseYear);
+
 }

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css"/>
+    <meta charset="UTF-8">
+    <title>Directors</title>
+</head>
+<body>
+    <header th:insert="fragments :: heading"></header>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Director Name</th>
+            <th>Delete</th>
+        </tr>
+        <tr th:each="director, iterationCount :${directors}" th:class="${iterationCount.odd}? 'odd'" th:object="${director}">
+            <td th:text="*{directorId}">ID</td>
+            <td><a th:text="*{directorFirstName +' '+ directorLastName}" th:href="'director/'+*{directorId}">DIRECTOR FNAME</a></td>
+            <td><a th:text="X" th:href="'/director/delete/'+*{directorId}">X</a></td>
+        </tr>
+    </table>
+    <footer th:insert="fragments :: languages"></footer>
+</body>
+</html>

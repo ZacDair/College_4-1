@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +24,12 @@ public class FilmServiceImplementation implements FilmService{
 
     @Override
     public Film save(String filmName, int releaseYear, Director director) {
+        Calendar calendar = Calendar.getInstance();
+        int currentYear = calendar.get(Calendar.YEAR);
+        if (releaseYear > currentYear){
+            log.error("ERROR: Release Year should be between 1888 and " + currentYear);
+            return null;
+        }
         return filmDao.save(new Film(filmName, releaseYear, director));
     }
 
@@ -43,5 +50,19 @@ public class FilmServiceImplementation implements FilmService{
             return optionalFilm.get();
         }
         return null;
+    }
+
+    @Override
+    public boolean deleteFilm(int filmId) {
+        filmDao.deleteById(filmId);
+        if (findFilmById(filmId) == null){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public List<Film> findFilmsByFilmReleaseYear(int releaseYear) {
+        return filmDao.findAllByFilmReleaseYear(releaseYear);
     }
 }
