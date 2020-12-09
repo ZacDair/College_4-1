@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css"/>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+    <header th:insert="fragments :: heading"></header>
+    <main>
+        <h2 th:text="#{register.heading}"></h2>
+        <br><br>
+        <form method="POST" th:action="@{/register}" th:object="${newUserForm}">
+            <label for="username" th:text="#{login.username}"></label>
+            <input id="username" type="text" th:field="*{newUsername}"/>
+
+            <label for="password" th:text="#{login.password}"></label>
+            <input id="password" type="password" th:field="*{newPassword}"/>
+
+            <label for="role" th:text="#{register.role}"></label>
+            <select id="role" th:field="*{newRole}">
+                <option th:each="ourRole: ${roles}" th:text="${ourRole.roleName}" th:value="${ourRole.roleName}"></option>
+            </select>
+
+            <div th:if="${duplicateUser}" class="error">
+                <span th:text="#{register.alreadyExists}"></span>
+            </div>
+            <div th:if="${#fields.hasErrors('newUsername')}" class="error" th:errors="*{newUsername}"></div>
+            <div th:if="${#fields.hasErrors('newPassword')}" class="error" th:errors="*{newPassword}"></div>
+            <div th:if="${#fields.hasErrors('newRole')}" class="error" th:errors="*{newRole}"></div>
+            <br><br><input type="submit" th:value="#{register.register}"/>
+        </form>
+    </main>
+    <footer th:insert="fragments :: languages"></footer>
+</body>
+</html>
