@@ -1,4 +1,4 @@
-package com.warner_dair;
+package com.warner_dair.configurations;
 
 import com.warner_dair.entities.Director;
 import com.warner_dair.entities.Film;

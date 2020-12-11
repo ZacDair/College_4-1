@@ -82,7 +82,7 @@ th{
 .languages {
     position: fixed;
     left: 0;
-    bottom: 0;
+    bottom: 200px;
     width: 100%;
     background-color: #bfeeff;
     color: white;

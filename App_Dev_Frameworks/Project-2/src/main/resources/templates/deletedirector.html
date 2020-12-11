@@ -17,7 +17,7 @@
             </tr>
             <tr th:each="director, iterationCount :${directors}" th:class="${iterationCount.odd}? 'odd'" th:object="${director}">
                 <td th:text="*{directorId}">ID</td>
-                <td><a th:text="*{directorFirstName +' '+ directorLastName}" th:href="'director/'+*{directorId}">DIRECTOR FNAME</a></td>
+                <td><a th:text="*{directorFirstName +' '+ directorLastName}" th:href="'director/'+*{directorId}">DIRECTOR NAME</a></td>
                 <td><a class=X th:text="X" th:href="'/delete/director/'+*{directorId}">X</a></td>
             </tr>
         </table>

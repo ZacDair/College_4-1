@@ -40,15 +40,22 @@ public class DirectorServiceImplementation implements DirectorService{
 
     @Override
     public boolean deleteDirectorAndFilms(int directorId) {
+        // Use the ID provided to find the director
         Director foundDirector = getDirectorById(directorId);
+
+        // If a director was found, retrieve the list of films and for each delete them
         if(foundDirector != null){
             List<Film> directorFilms = foundDirector.getDirectorFilms();
             for (Film film : directorFilms){
                 filmService.deleteFilm(film.getFilmId());
             }
+
+            // Set the directors list of films to null, as all films have been deleted
             foundDirector.setDirectorFilms(null);
             directorDao.delete(foundDirector);
         }
+
+        // Return true or false based on whether or not the director was deleted
         if (getDirectorById(directorId) == null){
             return true;
         }

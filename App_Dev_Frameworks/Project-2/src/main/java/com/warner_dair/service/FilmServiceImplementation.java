@@ -24,8 +24,11 @@ public class FilmServiceImplementation implements FilmService{
 
     @Override
     public Film save(String filmName, int releaseYear, Director director) {
+        // Create a calendar option to get the current year
         Calendar calendar = Calendar.getInstance();
         int currentYear = calendar.get(Calendar.YEAR);
+
+        // If the inputted year was greater than the current year return null and display an error message
         if (releaseYear > currentYear){
             log.error("ERROR: Release Year should be between 1888 and " + currentYear);
             return null;
@@ -55,10 +58,7 @@ public class FilmServiceImplementation implements FilmService{
     @Override
     public boolean deleteFilm(int filmId) {
         filmDao.deleteById(filmId);
-        if (findFilmById(filmId) == null){
-            return true;
-        }
-        return false;
+        return findFilmById(filmId) == null;
     }
 
     @Override

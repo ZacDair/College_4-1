@@ -13,7 +13,7 @@
         <form method="POST" th:action="@{/newdirector}" th:object="${newDirectorForm}">
             <label for="directorFirstName" th:text="#{newDirector.directorFirstName}"></label>
             <input id="directorFirstName" type="text" th:field="*{newDirectorFirstName}"/>
-
+            <br>
             <label for="directorLastName" th:text="#{newDirector.directorLastName}"></label>
             <input id="directorLastName" type="text" th:field="*{newDirectorLastName}"/>
 

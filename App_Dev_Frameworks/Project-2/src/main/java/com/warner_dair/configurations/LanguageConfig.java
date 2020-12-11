@@ -1,4 +1,4 @@
-package com.warner_dair;
+package com.warner_dair.configurations;
 
 import java.util.Locale;
 import org.springframework.context.annotation.Bean;

@@ -1,4 +1,4 @@
-package com.dair.entities;
+package com.warner_dair.entities;
 
 
 import lombok.AllArgsConstructor;

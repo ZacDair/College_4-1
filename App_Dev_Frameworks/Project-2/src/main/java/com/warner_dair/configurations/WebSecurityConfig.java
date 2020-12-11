@@ -1,7 +1,5 @@
-package com.warner_dair;
+package com.warner_dair.configurations;
 
-
-import com.warner_dair.service.UserDetailsServiceImplmentation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
