@@ -8,11 +8,11 @@ import javax.validation.constraints.Size;
 
 @Data
 public class NewDirectorForm {
-    @NotBlank
-    @Size(min = 2, max = 40)
+    @NotBlank(message= "Sorry, the first name must not be blank")
+    @Size(min = 2, max = 40, message= "Sorry, the first name must be between 2-40 characters")
     private String newDirectorFirstName;
 
-    @NotBlank
-    @Size(min = 2, max = 40)
+    @NotBlank(message= "Sorry, the last name must not be blank")
+    @Size(min = 2, max = 40, message= "Sorry, the last name must be between 2-40 characters")
     private String newDirectorLastName;
 }

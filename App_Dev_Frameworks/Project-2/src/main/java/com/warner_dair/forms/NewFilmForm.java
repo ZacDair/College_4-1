@@ -7,13 +7,13 @@ import javax.validation.constraints.*;
 @Data
 public class NewFilmForm {
 
-    @NotBlank
+    @NotBlank(message= "Please ensure the film has a name")
     private String newFilmName;
 
-    @NotNull
-    @Min(1888)
+    @NotNull(message= "Please ensure the film has a release year")
+    @Min(value=1888, message= "Please ensure the film has a release year greater than 1888")
     private int newFilmReleaseYear;
 
-    @NotNull
+    @NotNull(message= "Please ensure a director is selected")
     private int directorId;
 }

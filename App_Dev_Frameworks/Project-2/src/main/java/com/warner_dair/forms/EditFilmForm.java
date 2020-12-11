@@ -9,9 +9,9 @@ import javax.validation.constraints.Size;
 @Data
 public class EditFilmForm {
 
-    @NotBlank
+    @NotBlank(message= "Please ensure the film has a name")
     private String newFilmName;
 
-    @NotNull
+    @NotNull(message="Please ensure a film was selected")
     private int filmId;
 }

@@ -23,6 +23,7 @@
                 </div>
             </li>
             <li><a sec:authorize="!isAuthenticated()" th:text = "#{login.login}" th:href="@{/login}">Login</a></li>
+            <li><a sec:authorize="!isAuthenticated()" th:text = "#{register.register}" th:href="@{/register}">Register</a></li>
             <li><a sec:authorize="isAuthenticated()" th:text = "#{login.logout}" th:href="@{/log_me_out}">Logout</a></li>
         </ul>
     </nav>
