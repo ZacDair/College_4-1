@@ -1,4 +1,4 @@
-package com.warner_dair;
+package com.warner_dair.configurations;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;

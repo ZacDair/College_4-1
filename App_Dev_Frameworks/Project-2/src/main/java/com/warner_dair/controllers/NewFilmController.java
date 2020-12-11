@@ -42,7 +42,7 @@ public class NewFilmController {
         Film newFilm = filmService.save(newFilmForm.getNewFilmName(), newFilmForm.getNewFilmReleaseYear(), director);
 
         if(newFilm == null){
-            redirectAttributes.addFlashAttribute("duplicateDirector", (director.getDirectorFirstName() + " " + director.getDirectorLastName()));
+            redirectAttributes.addFlashAttribute("releaseYearError", true);
             return "redirect:newfilm";
         }
 

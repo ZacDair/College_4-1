@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css"/>
     <meta charset="UTF-8">
@@ -10,6 +10,7 @@
 
     <main>
         <h1 th:text="#{index.welcome}"></h1>
+        <h1 sec:authorize="isAuthenticated()"><span th:text="#{index.loggedInAs}"></span><span sec:authentication="name"></span></h1>
     </main>
 
     <footer th:insert="fragments :: languages"></footer>

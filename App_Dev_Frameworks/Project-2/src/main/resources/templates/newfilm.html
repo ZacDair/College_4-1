@@ -13,15 +13,14 @@
         <form method="POST" th:action="@{/newfilm}" th:object="${newFilmForm}">
             <label for="filmName" th:text="#{newFilm.newFilmName}"></label>
             <input id="filmName" type="text" th:field="*{newFilmName}"/>
-
+            <br>
             <label for="filmReleaseYear" th:text="#{newFilm.filmReleaseYear}"></label>
             <input id="filmReleaseYear" type="text" th:field="*{newFilmReleaseYear}"/>
-
             <div th:if="${#fields.hasErrors('newFilmName')}" class="error" th:errors="*{newFilmName}"></div>
             <div th:if="${#fields.hasErrors('newFilmReleaseYear')}" class="error" th:errors="*{newFilmReleaseYear}"></div>
 
-            <span th:if="${duplicateDirector}" class="error">
-                <span th:text="${duplicateDirector}"></span><span th:text="#{newDirector.alreadyExists}"></span>
+            <span th:if="${releaseYearError}" class="error">
+                <span class="error" th:text="#{newFilm.yearError}"></span>
             </span>
             <br>
             <label for="director" th:text="#{newFilm.chooseDirector}"></label>
