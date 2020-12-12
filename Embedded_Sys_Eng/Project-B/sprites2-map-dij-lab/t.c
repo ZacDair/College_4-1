@@ -43,6 +43,11 @@ extern char _binary_power_bmp_start;
 extern char _binary_mur_bmp_start;
 extern char _binary_point_bmp_start;
 
+// Additional bmps for UI elements
+extern char _binary_lives_bmp_start;
+extern char _binary_gameover_bmp_start;
+extern char _binary_gamewon_bmp_start;
+
 
 
 
@@ -243,6 +248,9 @@ int main()
 
     uart_init();
     up = &uart[0];
+    
+    //Create a variable to store the total amount of points to collect
+    int totalPointCount = 0;
     for (int j=0;j<Height;j++)
         for (int i=0;i<Width;i++){
             if (table[j][i] == M){
@@ -250,6 +258,8 @@ int main()
             }
             if (table[j][i] == P){
                 show_bmp1(&_binary_point_bmp_start, j*16, i*16);
+                //When we draw a point bmp, also increment our count of points
+                totalPointCount++;
             }
         }
     //show_bmp1(p, 0, 80);
@@ -265,6 +275,7 @@ int main()
 
     //Show 3 pacman icons as lives
     int lifeIconSize = 16;
+    show_bmp1(&_binary_gameover_bmp_start, lifeIconSize * 4, 80*2);
     show_bmp1(p, lifeIconSize * 5, lifeIconSize * 37);
     show_bmp1(p, lifeIconSize * 6, lifeIconSize * 37);
     show_bmp1(p, lifeIconSize * 7, lifeIconSize * 37);
@@ -315,9 +326,9 @@ int main()
     int hit=0;
     int dead =0;
     int lives =3;
-    
-    //Run always unless we run out of lives
-    while(1 & lives != 0){
+    int score = 0;
+    //Run always unless we run out of lives or collect all points
+    while(1 && lives != 0 && score != totalPointCount){
         //uprintf("enter a key from this UART : ");
 //uprintf("rand %d\n",(rand()+1)%5);
         move=0;
@@ -325,48 +336,44 @@ int main()
         if (upeek(up)){
             key=ugetc(up);
             switch(key){
-                // Go up 'w'
+                    // Go up 'w'
                 case 'w':
                     if ( y > 0 )
-                        if (table[y-16>>4][x>>4] == M){
-                            move=0;
+                        if (table[y-16>>4][x>>4] != M){
+                            y-=16;
+                            move=1;
                             break;
                         }
-                    y-=16;
-                    move=1;
                     break;
 
                     // Go right 'a'
                 case 'a':
                     if ( x > 0 )
-                        if (table[y>>4][x-16>>4] == M){
-                            move=0;
+                        if (table[y>>4][x-16>>4] != M){
+                            x-=16;
+                            move=1;
                             break;
                         }
-                    x-=16;
-                    move=1;
                     break;
 
                     // Go down 's'
                 case 's':
                     if ( y< 600 )
-                        if (table[y+16>>4][x>>4] == M){
-                            move=0;
+                        if (table[y+16>>4][x>>4] != M){
+                            y+=16;
+                            move=1;
                             break;
                         }
-                    y+=16;
-                    move=1;
                     break;
 
                     // Go left 'd'
                 case 'd':
                     if ( x< 400 )
-                        if (table[y>>4][x+16>>4] == M){
-                            move=0;
+                        if (table[y>>4][x+16>>4] != M){
+                            x+=16;
+                            move=1;
                             break;
                         }
-                    x+=16;
-                    move=1;
                     break;
 
 
@@ -380,18 +387,19 @@ int main()
             if (table[y>>4][x>>4] == P){
                 black_point(y,x);
                 table[y>>4][x>>4] = V;
-                uprintf("point\n");
+                score++;
+                uprintf("Point collected! %d/%d !\n", score, totalPointCount);
             }
             show_bmp(p, y, x,buff,replacePix,&oldstartR,&oldstartC);
         }
 
         if (spriteMove){
-            // Counter and a while loop to cycle through the enemies moving each
+            // Counter and a while loop to cycle through the enemies moving each (counter variable used as an index)
             int counter = 0;
             while (counter < 3){
                 if (sprites[counter].x == x && sprites[counter].y == y ){
-                    if (!dead & lives != 0){
-                        uprintf("u are dead\n");
+                    if (!dead && lives != 0){
+                        uprintf("\n\nYou died! %d lives left!\n", lives-1);
                         // Redraw where one of the lives was as a blank space
                         for (int i=0; i<16; i++){
                             for (int j=0; j<16; j++){
@@ -420,8 +428,8 @@ int main()
                     dead=1;
                     continue;
                 }
-                //Stop sprites moving if we have no lives left
-                if(lives == 0){
+                //Stop sprites moving if we have no lives left or score is reached
+                if(lives == 0 || score == totalPointCount){
                     spriteMove = 0;
                 } 
                 dead = 0;
@@ -518,5 +526,11 @@ int main()
             }
         
         }
+    }
+    if (score == totalPointCount){
+        uprintf("\n\nCongratulations, You Won!!!");
+    }
+    else{
+        uprintf("\n\nGame Over!!!");
     }
 }
