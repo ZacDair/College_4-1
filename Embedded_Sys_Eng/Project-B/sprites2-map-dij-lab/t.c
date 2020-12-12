@@ -275,7 +275,7 @@ int main()
 
     //Show 3 pacman icons as lives
     int lifeIconSize = 16;
-    show_bmp1(&_binary_gameover_bmp_start, lifeIconSize * 4, 80*2);
+    //show_bmp1(&_binary_lives_bmp_start, lifeIconSize * 4, 80*2);
     show_bmp1(p, lifeIconSize * 5, lifeIconSize * 37);
     show_bmp1(p, lifeIconSize * 6, lifeIconSize * 37);
     show_bmp1(p, lifeIconSize * 7, lifeIconSize * 37);
