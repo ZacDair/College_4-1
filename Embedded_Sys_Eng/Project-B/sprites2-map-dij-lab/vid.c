@@ -465,3 +465,14 @@ void black_point(int y, int x){
 
 }
 
+//Additionally black point function, this is used to remove the power ups
+void black_point1(int y, int x){
+    int maxY = y + 16;
+    int maxX = x + 16;
+    for (int ii= y; ii < maxY; ii++){
+	for (int jj= x; jj < maxX; jj++){
+	    clrpix(jj, ii);
+    	}
+    }
+
+}

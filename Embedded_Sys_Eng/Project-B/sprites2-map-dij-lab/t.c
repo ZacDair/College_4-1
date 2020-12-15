@@ -43,7 +43,7 @@ extern char _binary_power_bmp_start;
 extern char _binary_mur_bmp_start;
 extern char _binary_point_bmp_start;
 
-// Additional bmps for UI elements
+// Additional bmps for UI elements (Not working, due to the files being indexed bmps instead of RGB)
 extern char _binary_lives_bmp_start;
 extern char _binary_gameover_bmp_start;
 extern char _binary_gamewon_bmp_start;
@@ -256,11 +256,16 @@ int main()
             if (table[j][i] == M){
                 show_bmp1(&_binary_mur_bmp_start, j*16, i*16);
             }
-            if (table[j][i] == P){
+            else if (table[j][i] == P){
                 show_bmp1(&_binary_point_bmp_start, j*16, i*16);
                 //When we draw a point bmp, also increment our count of points
                 totalPointCount++;
             }
+	    //If the cell is a powerup draw that sprite
+	    else if (table[j][i] == W){
+		show_bmp1(&_binary_power_bmp_start, j*16, i*16);
+	    }
+	    
         }
     //show_bmp1(p, 0, 80);
     //Show pacman and the enemy sprites
@@ -275,7 +280,7 @@ int main()
 
     //Show 3 pacman icons as lives
     int lifeIconSize = 16;
-    //show_bmp1(&_binary_lives_bmp_start, lifeIconSize * 4, 80*2);
+    //show_bmp1(&_binary_won_bmp_start, lifeIconSize * 4, 80*2);
     show_bmp1(p, lifeIconSize * 5, lifeIconSize * 37);
     show_bmp1(p, lifeIconSize * 6, lifeIconSize * 37);
     show_bmp1(p, lifeIconSize * 7, lifeIconSize * 37);
@@ -327,6 +332,7 @@ int main()
     int dead =0;
     int lives =3;
     int score = 0;
+    int poweredUp = 0;
     //Run always unless we run out of lives or collect all points
     while(1 && lives != 0 && score != totalPointCount){
         //uprintf("enter a key from this UART : ");
@@ -381,6 +387,7 @@ int main()
                     move=0;
             }
         }
+	
         if (move){
 
 
@@ -390,6 +397,11 @@ int main()
                 score++;
                 uprintf("Point collected! %d/%d !\n", score, totalPointCount);
             }
+	    else if (table[y>>4][x>>4] == W){
+                black_point1(y,x);
+                table[y>>4][x>>4] = V;
+		poweredUp = 1;
+	    }
             show_bmp(p, y, x,buff,replacePix,&oldstartR,&oldstartC);
         }
 

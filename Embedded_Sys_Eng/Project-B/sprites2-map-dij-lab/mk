@@ -9,13 +9,12 @@ arm-none-eabi-objcopy -I binary -O elf32-littlearm -B arm power.bmp power.o
 arm-none-eabi-objcopy -I binary -O elf32-littlearm -B arm mur.bmp mur.o
 arm-none-eabi-objcopy -I binary -O elf32-littlearm -B arm point.bmp point.o
 arm-none-eabi-objcopy -I binary -O elf32-littlearm -B arm gameover.bmp gameover.o
-arm-none-eabi-objcopy -I binary -O elf32-littlearm -B arm gamewon.bmp gamewon.o
+arm-none-eabi-objcopy -I binary -O elf32-littlearm -B arm gamewon.bmp won.o
 arm-none-eabi-objcopy -I binary -O elf32-littlearm -B arm lives.bmp lives.o
 
 # show exported symbols
 nm -S -t d panda.o
 nm -S -t d gameover.o
-nm -S -t d gamewon.o
 nm -S -t d lives.o
 nm -S -t d porkcar.o
 nm -S -t d pacman.o
