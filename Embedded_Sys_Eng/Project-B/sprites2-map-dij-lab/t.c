@@ -248,6 +248,7 @@ int main()
 
     uart_init();
     up = &uart[0];
+
     
     //Create a variable to store the total amount of points to collect
     int totalPointCount = 0;
@@ -277,6 +278,7 @@ int main()
              &(sprites[1].oldstartRow),&(sprites[1].oldstartCol));
     show_bmp(sprites[2].p, sprites[2].y, sprites[2].x,sprites[2].buff,sprites[2].replacePix,
              &(sprites[2].oldstartRow),&(sprites[2].oldstartCol));
+
 
     //Show 3 pacman icons as lives
     int lifeIconSize = 16;
@@ -335,13 +337,15 @@ int main()
     int poweredUp = 0;
     //Run always unless we run out of lives or collect all points
     while(1 && lives != 0 && score != totalPointCount){
+
         //uprintf("enter a key from this UART : ");
-//uprintf("rand %d\n",(rand()+1)%5);
+        //uprintf("rand %d\n",(rand()+1)%5);
         move=0;
         replacePix =1;
         if (upeek(up)){
             key=ugetc(up);
             switch(key){
+
                     // Go up 'w'
                 case 'w':
                     if ( y > 0 )
@@ -355,6 +359,7 @@ int main()
                     // Go right 'a'
                 case 'a':
                     if ( x > 0 )
+
                         if (table[y>>4][x-16>>4] != M){
                             x-=16;
                             move=1;
@@ -365,6 +370,7 @@ int main()
                     // Go down 's'
                 case 's':
                     if ( y< 600 )
+
                         if (table[y+16>>4][x>>4] != M){
                             y+=16;
                             move=1;
@@ -375,6 +381,7 @@ int main()
                     // Go left 'd'
                 case 'd':
                     if ( x< 400 )
+
                         if (table[y>>4][x+16>>4] != M){
                             x+=16;
                             move=1;
@@ -387,7 +394,7 @@ int main()
                     move=0;
             }
         }
-	
+
         if (move){
 
 
