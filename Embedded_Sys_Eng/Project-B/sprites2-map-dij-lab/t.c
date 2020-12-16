@@ -43,6 +43,11 @@ extern char _binary_power_bmp_start;
 extern char _binary_mur_bmp_start;
 extern char _binary_point_bmp_start;
 
+// Additional bmps for UI elements (Not working, due to the files being indexed bmps instead of RGB)
+extern char _binary_lives_bmp_start;
+extern char _binary_gameover_bmp_start;
+extern char _binary_gamewon_bmp_start;
+
 
 
 
@@ -200,12 +205,12 @@ int main()
     sprites[0].y = 16;
     sprites[0].replacePix =0;
     sprites[0].p = &_binary_speedy_bmp_start;
-    sprites[1].x = 16*4;
-    sprites[1].y = 16*4;
+    sprites[1].x = 16*10;
+    sprites[1].y = 16*3;
     sprites[1].replacePix =0;
     sprites[1].p = &_binary_pokey_bmp_start;
-    sprites[2].x = 16*4;
-    sprites[2].y = 16*8;
+    sprites[2].x = 16*9;
+    sprites[2].y = 16*9;
     sprites[2].replacePix =0;
     sprites[2].p = &_binary_shadow_bmp_start;
 
@@ -243,17 +248,28 @@ int main()
 
     uart_init();
     up = &uart[0];
+
+    
+    //Create a variable to store the total amount of points to collect
+    int totalPointCount = 0;
     for (int j=0;j<Height;j++)
         for (int i=0;i<Width;i++){
             if (table[j][i] == M){
                 show_bmp1(&_binary_mur_bmp_start, j*16, i*16);
             }
-            if (table[j][i] == P){
+            else if (table[j][i] == P){
                 show_bmp1(&_binary_point_bmp_start, j*16, i*16);
+                //When we draw a point bmp, also increment our count of points
+                totalPointCount++;
             }
+	    //If the cell is a powerup draw that sprite
+	    else if (table[j][i] == W){
+		show_bmp1(&_binary_power_bmp_start, j*16, i*16);
+	    }
+	    
         }
     //show_bmp1(p, 0, 80);
-
+    //Show pacman and the enemy sprites
     p = &_binary_pacman_bmp_start;
     show_bmp(p, y, x,buff,replacePix,&oldstartR,&oldstartC);
     show_bmp(sprites[0].p, sprites[0].y, sprites[0].x,sprites[0].buff,sprites[0].replacePix,
@@ -262,6 +278,15 @@ int main()
              &(sprites[1].oldstartRow),&(sprites[1].oldstartCol));
     show_bmp(sprites[2].p, sprites[2].y, sprites[2].x,sprites[2].buff,sprites[2].replacePix,
              &(sprites[2].oldstartRow),&(sprites[2].oldstartCol));
+
+
+    //Show 3 pacman icons as lives
+    int lifeIconSize = 16;
+    //show_bmp1(&_binary_won_bmp_start, lifeIconSize * 4, 80*2);
+    show_bmp1(p, lifeIconSize * 5, lifeIconSize * 37);
+    show_bmp1(p, lifeIconSize * 6, lifeIconSize * 37);
+    show_bmp1(p, lifeIconSize * 7, lifeIconSize * 37);
+
 /* TODO manually set the following two edges for the drawing below. Remove. */
 //graph[21][22] =1;
 //graph[22][23] =1;
@@ -307,57 +332,61 @@ int main()
     int key;
     int hit=0;
     int dead =0;
+    int lives =3;
+    int score = 0;
+    int poweredUp = 0;
+    //Run always unless we run out of lives or collect all points
+    while(1 && lives != 0 && score != totalPointCount){
 
-    while(1){
         //uprintf("enter a key from this UART : ");
-//uprintf("rand %d\n",(rand()+1)%5);
+        //uprintf("rand %d\n",(rand()+1)%5);
         move=0;
         replacePix =1;
         if (upeek(up)){
             key=ugetc(up);
             switch(key){
-                // Go up 'w'
+
+                    // Go up 'w'
                 case 'w':
                     if ( y > 0 )
-                        if (table[y-16>>4][x>>4] == M){
-                            move=0;
+                        if (table[y-16>>4][x>>4] != M){
+                            y-=16;
+                            move=1;
                             break;
                         }
-                    y-=16;
-                    move=1;
                     break;
 
                     // Go right 'a'
                 case 'a':
                     if ( x > 0 )
-                        if (table[y>>4][x-16>>4] == M){
-                            move=0;
+
+                        if (table[y>>4][x-16>>4] != M){
+                            x-=16;
+                            move=1;
                             break;
                         }
-                    x-=16;
-                    move=1;
                     break;
 
                     // Go down 's'
                 case 's':
                     if ( y< 600 )
-                        if (table[y+16>>4][x>>4] == M){
-                            move=0;
+
+                        if (table[y+16>>4][x>>4] != M){
+                            y+=16;
+                            move=1;
                             break;
                         }
-                    y+=16;
-                    move=1;
                     break;
 
                     // Go left 'd'
                 case 'd':
                     if ( x< 400 )
-                        if (table[y>>4][x+16>>4] == M){
-                            move=0;
+
+                        if (table[y>>4][x+16>>4] != M){
+                            x+=16;
+                            move=1;
                             break;
                         }
-                    x+=16;
-                    move=1;
                     break;
 
 
@@ -365,85 +394,162 @@ int main()
                     move=0;
             }
         }
+
         if (move){
 
 
             if (table[y>>4][x>>4] == P){
                 black_point(y,x);
                 table[y>>4][x>>4] = V;
-                uprintf("point\n");
+                score++;
+                uprintf("Point collected! %d/%d !\n", score, totalPointCount);
             }
+	    else if (table[y>>4][x>>4] == W){
+                black_point1(y,x);
+                table[y>>4][x>>4] = V;
+		poweredUp = 1;
+	    }
             show_bmp(p, y, x,buff,replacePix,&oldstartR,&oldstartC);
         }
 
         if (spriteMove){
-            if (sprites[0].x == x && sprites[0].y == y ){
-                if (!dead)
-                    uprintf("u are dead\n");
-                dead=1;
-                continue;
-            }
-            dead = 0;
-            if (!sprites[0].path){
-                // TODO calculate the vertex where the ghost is and the vertex where pacman is and
-                // call dijkstra accordingly - hint y>>4 divides y by 16 and x>>4 divides x by 16.
-                // Note that the x,y is the absolute pixel position of the ghost or pacman respectively.
-                // The dijkstra function will fill the soln
-                // array with the vertices of the optimal path. solnlen will hold the number of vertices in the path.
-                // If solnlen is zero then there is no path.
-                //
-                int vpac = ((y>>4)*Width)+(x>>4);
-                int vghost = ((sprites[0].y>>4)*Width)+(sprites[0].x>>4);
-                dijkstra(graph, vghost,vpac );
-                if (solnlen){
-                    // copy the solution to the ghost's path list
-                    for (int i=0;i<solnlen;i++)
-                        sprites[0].pathV[i] = soln[i];
-                    /* TODO set the x,y position of the ghost to absolute pixel position associated with the
-                           first vertex in the soln path.
-                           Note:- the unique vertex for a square that pacman or the ghost at j,i  is j*Width +i
-                           Note also that x,y is the absolute pixel position of the ghost
-                */
-                    sprites[0].x = (soln[i]%Width)*16;
-                    sprites[0].y = (soln[i]/Width)*16;
-                    sprites[0].pathpos=1;
-                    sprites[0].pathlen=solnlen;
-                    sprites[0].path =1;
+            // Counter and a while loop to cycle through the enemies moving each (counter variable used as an index)
+            int counter = 0;
+            while (counter < 3){
+                if (sprites[counter].x == x && sprites[counter].y == y ){
+                    if (!dead && lives != 0){
+                        uprintf("\n\nYou died! %d lives left!\n", lives-1);
+                        // Redraw where one of the lives was as a blank space
+                        for (int i=0; i<16; i++){
+                            for (int j=0; j<16; j++){
+                                // Remove a life icon
+                                clrpix((16*37)+i, (16*(lives+4))+j);
+
+                                // Remove all enemy sprites
+                                clrpix((sprites[0].x)+i, (sprites[0].y)+j);
+                                clrpix((sprites[1].x)+i, (sprites[1].y)+j);
+                                clrpix((sprites[2].x)+i, (sprites[2].y)+j);
+                            }
+                        }
+
+                        // Reset all enemy spawnpoints and clear paths
+                        sprites[0].x = 16*1;
+                        sprites[0].y = 16*1;
+                        sprites[0].path =0;
+                        sprites[1].x = 16*17;
+                        sprites[1].y = 16*1;
+                        sprites[1].path =0;
+                        sprites[2].x = 16*17;
+                        sprites[2].y = 16*19;
+                        sprites[2].path =0;
+                        lives--;
+                    }
+                    dead=1;
+                    continue;
                 }
-                else{
-                    uprintf("no soln");
-                    sprites[0].x+=16;
+                //Stop sprites moving if we have no lives left or score is reached
+                if(lives == 0 || score == totalPointCount){
+                    spriteMove = 0;
+                } 
+                dead = 0;
+                if (!sprites[counter].path){
+                    // TODO calculate the vertex where the ghost is and the vertex where pacman is and
+                    // call dijkstra accordingly - hint y>>4 divides y by 16 and x>>4 divides x by 16.
+                    // Note that the x,y is the absolute pixel position of the ghost or pacman respectively.
+                    // The dijkstra function will fill the soln
+                    // array with the vertices of the optimal path. solnlen will hold the number of vertices in the path.
+                    // If solnlen is zero then there is no path.
+                    //
+                    int vpac = ((y>>4)*Width)+(x>>4);
+                    int vghost = ((sprites[counter].y>>4)*Width)+(sprites[counter].x>>4);
+                    dijkstra(graph, vghost,vpac );
+                    if (solnlen){
+                        // copy the solution to the ghost's path list
+                        for (int i=0;i<solnlen;i++)
+                            sprites[counter].pathV[i] = soln[i];
+                        /* TODO set the x,y position of the ghost to absolute pixel position associated with the
+                               first vertex in the soln path.
+                               Note:- the unique vertex for a square that pacman or the ghost at j,i  is j*Width +i
+                               Note also that x,y is the absolute pixel position of the ghost
+                    */
+                        sprites[counter].x = (soln[i]%Width)*16;
+                        sprites[counter].y = (soln[i]/Width)*16;
+                        sprites[counter].pathpos=1;
+                        sprites[counter].pathlen=solnlen;
+                        sprites[counter].path =1;
+                    }
+                    else{
+                        uprintf("no soln");
+                        sprites[counter].x+=16;
+                    }
                 }
+                else
+                if (sprites[counter].pathpos == sprites[counter].pathlen)
+                    sprites[counter].path=0; // get new path next time
+                else
+                if (sprites[counter].pathpos < sprites[counter].pathlen){
+
+                    int pos = sprites[counter].pathpos;
+                    int vertex = sprites[counter].pathV[pos];
+                    /* TODO set the x,y position of the ghost to x,y position associated with the
+                               next vertex in the path.
+                               Note:- the unique vertex for a square that pacman or the ghost at j,i  is j*Width +i
+                    */
+                    // For each sprite, check vertexes to prevent collision
+                    switch (counter){
+                        case 0:
+                            if(vertex != sprites[counter+1].pathV[sprites[counter+1].pathpos-1]){
+                                if(vertex != sprites[counter+2].pathV[sprites[counter+2].pathpos-1]){
+                                    sprites[counter].x = (vertex%Width)*16;
+                                    sprites[counter].y = (vertex/Width)*16;
+                                    sprites[counter].pathpos++;
+                                }
+                            }
+                            break;
+
+                        case 1:
+                            if(vertex != sprites[counter-1].pathV[sprites[counter-1].pathpos-1]){
+                                if(vertex != sprites[counter+1].pathV[sprites[counter+1].pathpos-1]){
+                                    sprites[counter].x = (vertex%Width)*16;
+                                    sprites[counter].y = (vertex/Width)*16;
+                                    sprites[counter].pathpos++;
+                                }
+                            }
+                            break;
+
+                        case 2:
+                            if(vertex != sprites[counter-1].pathV[sprites[counter-1].pathpos-1]){
+                                if(vertex != sprites[counter-2].pathV[sprites[counter-2].pathpos-1]){
+                                    sprites[counter].x = (vertex%Width)*16;
+                                    sprites[counter].y = (vertex/Width)*16;
+                                    sprites[counter].pathpos++;
+                                }
+                            }
+                            break;
+                    }
+                    //uncomment the line below to calculate a new path every move
+                    //sprites[counter].path=0;
+                    
+                
+
+               }
+    //         sprites[0].x+=16;
+                sprites[counter].replacePix=1;
+                show_bmp(sprites[counter].p, sprites[counter].y, sprites[counter].x,sprites[counter].buff,sprites[counter].replacePix,
+                         &(sprites[counter].oldstartRow),&(sprites[counter].oldstartCol));
+
+                speed=0;
+                spriteMove =0;
+                counter++;
+                
             }
-            else
-            if (sprites[0].pathpos == sprites[0].pathlen)
-                sprites[0].path=0; // get new path next time
-            else
-            if (sprites[0].pathpos < sprites[0].pathlen){
-
-                int pos = sprites[0].pathpos;
-                int vertex = sprites[0].pathV[pos];
-                /* TODO set the x,y position of the ghost to x,y position associated with the
-                           next vertex in the path.
-                           Note:- the unique vertex for a square that pacman or the ghost at j,i  is j*Width +i
-                */
-                sprites[0].x = (vertex%Width)*16;
-                sprites[0].y = (vertex/Width)*16;
-                sprites[0].pathpos++;
-            }
-
-
-//         sprites[0].x+=16;
-            sprites[0].replacePix=1;
-            show_bmp(sprites[0].p, sprites[0].y, sprites[0].x,sprites[0].buff,sprites[0].replacePix,
-                     &(sprites[0].oldstartRow),&(sprites[0].oldstartCol));
-
-            speed=0;
-            spriteMove =0;
-
-
-
+        
         }
-
+    }
+    if (score == totalPointCount){
+        uprintf("\n\nCongratulations, You Won!!!");
+    }
+    else{
+        uprintf("\n\nGame Over!!!");
     }
 }

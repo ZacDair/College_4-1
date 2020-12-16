@@ -17,6 +17,9 @@ SECTIONS
   .data : {power.o}
   .data : {mur.o}
   .data : {point.o}
+  .data : {lives.o}
+  .data : {gameover.o}
+  .data : {gamewon.o}
   . = ALIGN(8);
   . = . + 0x8000; /* 4kB of SVC stack space */
   svc_stack = .;

@@ -438,9 +438,41 @@ int show_bmp1(char *p, int startRow, int startCol)
 
 void black_point(int y, int x){
 /* TODO */
+    /* The white point looks like 4 white pixels (2x2) surrounded by black overall (16*16) bmp
+       but due to anti-alisaing possibly, there is several grey pixels around the 2*2, the below method works but leaves these additional pixels.
+       Also the usage of clrpix here simply replaces the buffer value of that location with a black value
+    */
+    clrpix(x+6, y+6);
+    clrpix(x+7, y+6);
+    clrpix(x+8, y+6);
+    clrpix(x+9, y+6);
+        
+    clrpix(x+6, y+7);
     clrpix(x+7, y+7);
-    clrpix(x+7, y+8);
     clrpix(x+8, y+7);
+    clrpix(x+9, y+7);
+    
+    clrpix(x+6, y+8);
+    clrpix(x+7, y+8);
     clrpix(x+8, y+8);
+    clrpix(x+9, y+8);
+
+    clrpix(x+6, y+9);
+    clrpix(x+7, y+9);
+    clrpix(x+8, y+9);
+    clrpix(x+9, y+9);
+    
+
 }
 
+//Additionally black point function, this is used to remove the power ups
+void black_point1(int y, int x){
+    int maxY = y + 16;
+    int maxX = x + 16;
+    for (int ii= y; ii < maxY; ii++){
+	for (int jj= x; jj < maxX; jj++){
+	    clrpix(jj, ii);
+    	}
+    }
+
+}
