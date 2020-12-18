@@ -1,0 +1,37 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<div th:fragment="heading">
+    <h1 class=welcomeBanner th:text="#{heading.welcome}"></h1>
+    <nav>
+        <ul>
+            <li><a th:text = "#{fragments.home}" th:href="@{/}">HOME</a></li>
+            <li class="dropdown">
+                <a th:text = "#{fragments.directors}" th:href="@{/directors}">DIRECTORS</a>
+                <div class="dropdown-content">
+                    <a th:text = "#{fragments.viewDirectors}" th:href="@{/directors}">VIEW DIRECTORS</a>
+                    <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')" th:text = "#{fragments.newDirector}" th:href="@{/newdirector}">ADD DIRECTOR</a>
+                    <a sec:authorize="hasAnyRole('ROLE_ADMIN')" th:text="#{fragments.deleteDirector}" th:href="@{/delete/director}">DELETE DIRECTOR</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a th:text = "#{fragments.films}" th:href="@{/films}">FILMS</a>
+                <div class="dropdown-content">
+                    <a th:text = "#{fragments.viewFilms}" th:href="@{/films}">FILMS</a>
+                    <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')" th:text="#{fragments.newFilm}" th:href="@{/newfilm}">ADD FILM</a>
+                    <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')" th:text="#{fragments.editFilm}" th:href="@{/editfilm}">EDIT FILM</a>
+                    <a sec:authorize="hasAnyRole('ROLE_ADMIN')" th:text = "#{fragments.deleteFilm}" th:href="@{/delete/film}">DELETE FILM</a>
+                </div>
+            </li>
+            <li><a sec:authorize="!isAuthenticated()" th:text = "#{login.login}" th:href="@{/login}">Login</a></li>
+            <li><a sec:authorize="!isAuthenticated()" th:text = "#{register.register}" th:href="@{/register}">Register</a></li>
+            <li><a sec:authorize="isAuthenticated()" th:text = "#{login.logout}" th:href="@{/log_me_out}">Logout</a></li>
+        </ul>
+    </nav>
+</div>
+
+<div class=languages th:fragment="languages">
+    <footer th:with="currentUrl=(${@thymeleafBean.removeLangFromUrl()})">
+        <a th:href="@{${currentUrl}(lang=ie)}">IE</a>
+        <a th:href="@{${currentUrl}(lang=fr)}">FR</a>
+    </footer>
+</div>

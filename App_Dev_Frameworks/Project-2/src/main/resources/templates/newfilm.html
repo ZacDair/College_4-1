@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css"/>
+    <meta charset="UTF-8">
+    <title>New Film</title>
+</head>
+<body>
+    <header th:insert="fragments :: heading"></header>
+    <main>
+        <h2 th:text="#{newfilm.heading}"></h2>
+        <br><br>
+        <form method="POST" th:action="@{/newfilm}" th:object="${newFilmForm}">
+            <label for="filmName" th:text="#{newFilm.newFilmName}"></label>
+            <input id="filmName" type="text" th:field="*{newFilmName}"/>
+
+            <label for="filmReleaseYear" th:text="#{newFilm.filmReleaseYear}"></label>
+            <input id="filmReleaseYear" type="text" th:field="*{newFilmReleaseYear}"/>
+
+            <div th:if="${#fields.hasErrors('newFilmName')}" class="error" th:errors="*{newFilmName}"></div>
+            <div th:if="${#fields.hasErrors('newFilmReleaseYear')}" class="error" th:errors="*{newFilmReleaseYear}"></div>
+
+            <span th:if="${duplicateDirector}" class="error">
+                <span th:text="${duplicateDirector}"></span><span th:text="#{newDirector.alreadyExists}"></span>
+            </span>
+            <br>
+            <label for="director" th:text="#{newFilm.chooseDirector}"></label>
+            <select id="director" th:field="*{directorId}">
+                <option th:each="director: ${directors}" th:text="${director.directorFirstName + ' ' + director.directorLastName }" th:value="${director.directorId}"></option>
+            </select>
+            <br><br>
+            <input type="submit" th:value="#{newFilm.addFilm}">
+        </form>
+    </main>
+    <footer th:insert="fragments :: languages"></footer>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css"/>
+    <meta charset="UTF-8">
+    <title>Edit a Film</title>
+</head>
+<body>
+    <header th:insert="fragments :: heading"></header>
+    <main>
+        <h2 th:text="#{editFilm.heading}"></h2>
+        <br><br>
+        <form method="POST" th:action="@{/editfilm}" th:object="${editFilmForm}">
+            <label for="film" th:text="#{editFilm.chooseFilm}"></label>
+            <select id="film" th:field="*{filmId}">
+                <option th:each="film: ${films}" th:text="${film.filmName}" th:value="${film.filmId}"></option>
+            </select>
+            <br>
+            <label for="filmName" th:text="#{newFilm.newFilmName}"></label>
+            <input id="filmName" type="text" th:field="*{newFilmName}"/>
+
+            <div th:if="${#fields.hasErrors('newFilmName')}" class="error" th:errors="*{newFilmName}"></div>
+            <br><br>
+            <input type="submit" th:value="#{newFilm.addFilm}">
+        </form>
+    </main>
+    <footer th:insert="fragments :: languages"></footer>
+</body>
+</html>
