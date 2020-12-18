@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css"/>
+    <meta charset="UTF-8">
+    <title>New Town</title>
+</head>
+<body>
+    <header th:insert="fragments :: heading"></header>
+    <form method="POST" th:action="@{/newtown}" th:object="${newTownForm}">
+        <label for="townName" th:text="#{newtown.newTownName}"></label>
+        <input id="townName" type="text" th:field="*{newTownName}"/>
+
+        <div th:if="${#fields.hasErrors('newTownName')}" class="error" th:errors="*{newTownName}"></div>
+
+        <span th:if="${duplicateTown}" class="error">
+            <span th:text="${duplicateTown}"></span>, <span th:text="${duplicateCounty}"></span><span th:text="#{newCounty.alreadyExists}"></span>
+        </span>
+        <br>
+        <label for="county" th:text="#{newtown.chooseCounty}"></label>
+        <select id="county" th:field="*{countyId}">
+            <option th:each="county: ${counties}" th:text="${county.countyName}" th:value="${county.countyId}"></option>
+        </select>
+        <br>
+        <input type="submit" th:value="#{newtown.addTown}">
+    </form>
+    <footer th:insert="fragments :: languages"></footer>
+</body>
+</html>

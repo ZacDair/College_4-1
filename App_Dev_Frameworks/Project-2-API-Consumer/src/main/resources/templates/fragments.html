@@ -1,0 +1,19 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<div th:fragment="heading">
+    <h1 class=welcomeBanner th:text="#{heading.welcome}"></h1>
+    <nav>
+        <ul>
+            <li><a th:text = "#{fragments.home}" th:href="@{/}">HOME</a></li>
+            <li class="dropdown">
+                <a th:text = "#{fragments.directors}" th:href="@{/directors}">DIRECTORS</a>
+                <div class="dropdown-content">
+                    <a th:text = "#{fragments.viewDirectors}" th:href="@{/directors}">VIEW DIRECTORS</a>
+                    <a th:text="#{fragments.deleteDirector}" th:href="@{/directors}">DELETE DIRECTOR</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a th:text = "#{fragments.viewFilms}" th:href="@{/findfilm}">FILMS</a>
+            </li>
+        </ul>
+    </nav>
+</div>

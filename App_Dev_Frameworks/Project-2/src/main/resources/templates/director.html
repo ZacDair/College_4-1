@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css"/>
+    <meta charset="UTF-8">
+    <title>Director Details</title>
+</head>
+<body>
+    <header th:insert="fragments :: heading"></header>
+    <main>
+        <h2><span th:text="${director.directorFirstName + ' ' + director.directorLastName}">DIRECTOR NAME</span></h2>
+        <br><br>
+        <h3><span th:text="#{director.films}">FILMS</span></h3>
+        <table>
+            <tr>
+                <th th:text="#{director.filmId}">FILM ID</th>
+                <th th:text="#{director.filmName}">FILM NAME</th>
+                <th th:text="#{director.filmReleaseYear}">FILM RELEASE YEAR</th>
+            </tr>
+            <tr th:each="film, iterationCount :${director.directorFilms}" th:class="${iterationCount.odd}? 'odd' "th:object="${film}">
+                <td th:text="*{filmId}">FILM ID</td>
+                <td th:text="*{filmName}">FILM NAME</td>
+                <td th:text="*{filmReleaseYear}">FILM RELEASE YEAR</td>
+            </tr>
+        </table>
+    </main>
+    <footer th:insert="fragments :: languages"></footer>
+</body>
+</html>
