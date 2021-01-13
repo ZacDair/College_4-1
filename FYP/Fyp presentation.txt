@@ -1,0 +1,74 @@
+Slide 1
+Good morning, I'm Zac Dair
+My project is a bi-modal approach to emotion detection.
+This approach is a workflow designed to process and classify the presence of emotions in speech and to identify the context surrounding them.
+
+Slide 2
+This workflow is designed to extract two modalities from speech. which are the verbal and non-verbal components of the audio.
+The verbal components are extracted via transcription of the audio, this is the spoken content.
+And the non-verbal components are known as affective prosody, which is the pauses, tone, pitch, etc.
+
+The emotion detection classifiers utilize the emotions defined in 'basic emotion theory' by Ekman
+These are Anger, Contempt, Disgust, Fear, Joy, Sadness, Surprise.
+These emotions are detected using supervised machine learning models.
+
+The workflow additionally employs semantic analysis and sentiment analysis, these are used to gain further information about the data.
+Such as structure, theme extraction, meaning, overall sentiment, etc.
+This additional data and the emotion presence classification enables contextual information to be extracted and inferred from the audio data.
+
+The purpose of this project is to create a workflow that can be employed by speech-based digital assistants such as Amazon Alexa, With an aim to provide the digital assistant with a deeper understanding of the user and more fluid interactions.
+
+Slide 3
+There are several key goals in this project.
+The first is to create a procedure to extract verbal and non-verbal components from audio.
+The second is to conduct semantic analysis on both modalities, such as sentiment analysis, theme extraction from text, and structural analysis from both modalities.
+The third is to utilize two machine learning-powered emotion detection classifiers, one per modality. These models are trained to detect the emotions outlined in Basic emotion theory.
+The fourth is to create a procedure to converge the analysis results and to make contextual inferences about the data.
+And finally, to combine the entire workflow into a system that can be employed by digital assistants, or other voice-based systems.
+
+Slide 4
+During the research phase, one of the key decisions was deciding the range of emotion to be detected.
+There is a wide range of possibilities, however, Basic emotion theory was chosen, due to its prevalence in western research.
+And the general conjecture around the theory is that the emotions exhibited may not be universal due to cross-cultural differences.
+However, the universality of emotions doesn't fit in the current scope of the project, hence that conjecture isn't really an issue.
+
+Research was also conducted into the usages and importance of natural language processing.
+From reading AI a Modern Approach, I gained insights into various NLP methods such as N-grams, which is the act of splitting a corpus into n sized segments.
+This can be done on both characters and words, there are advantages and disadvantages to each, for example, a disadvantage of character models is losing the overall structure and semantic relationships of the corpus.
+
+Sentiment analysis conducted using semantics was explored, in a paper outlining a series of processes used to conduct sentiment analysis on text data.
+Sentiment analysis is the classification of data based on an exhibited positive or negative polarity.
+This paper outlined a practical approach that provided insights into pre-processing procedures such as removing symbols, spacing, and other noise from text data.
+Additionally, the paper explained tokenization which is converting a character sequence into pieces, and also Bag of Word models which are uni-gram or one-gram n-gram models.
+These methods were combined into a procedure used to prepare the data for their machine learning models.
+
+Emotion detection was also researched, this emotion detection took place on covid tweets detecting 6 of the 7 emotions from Basic emotion theory.
+A significant portion of the paper outlined their data gathering process and pre-processing methods.
+The paper also outlines the emotion detection model itself, which is comprised of a multi-stage classification process, where the first stage classifies sentiment, which then dictates which emotion classifier to use in the second stage.
+the second stage is either an emotion classifier for Joy or Surprise if the initial sentiment exhibited is positive or the second classifier used for the remaining emotions.
+
+Slide 5
+This diagram depicts a high-level overview of the workflow itself.
+From this, you can see the audio as the initial input, which is then split into the two modalities.
+The top path of the diagram is the affective prosody analysis, which consists of a stage for pre-processing and extracting relevant features, another stage for the actual emotion detection, and finally a semantic analysis stage.
+Then the bottom part of the diagram is the text analysis, this consists of first transcribing the audio into text, then emotion detection, and finally semantic analysis.
+The results of the two analysis procedures are then converged for the final analysis, where context is identified.
+
+Slide 6
+In order to implement this workflow, firstly the training data must be gathered, I am hoping to utilize a dataset constructed from an experimental study by CIT from Ryan Donavon, which is comprised of data containing both text and audio reactions to emotional stimuli.
+Secondly, the transcription model must be implemented, using a commercial system such as google speech to text as a baseline and then comparing results with open source models to discern the best model to implement into the workflow.
+Thirdly the pre-processing procedure for affective prosody will be created, this will be used to extract relevant features, and to remove any 'noise' from the audio samples.
+fourthly utilizing NLP a pre-processing procedure for text will be created used to extract relevant features, remove stop words, and similarly, remove 'noise' from the transcribed data.
+Then a semantic analysis procedure will be implemented to detect sentiment and identify the structure of the audio.
+Similarly, a procedure for semantic analysis will also be implemented for text, comprised of sentiment analysis, theme and meaning extraction, and to additionally identify the structure of the text.
+Following this, two external emotion detection models will be employed, one for each modality. These machine learning models will be open-source models that have been created and tested externally and then evaluated at the beginning of the implementation phase.
+And finally, a summary of the previous analysis stages will be combined and inferences made to identify context from the data.
+
+Slide 7
+To conclude, during the research phase, my project has evolved from an initially broad contextual analysis to a specific contextual analysis for emotions exhibited in speech.
+Research has also shown the importance of analyzing both verbal and non-verbal components of speech, as this represents a similar manner to that which humans converse.
+Additionally, the range of emotions to be detected from Basic emotion theory is to be used, as it has a prevalence in western research and provides a comprehensive overview of basic humans emotions.
+And finally, the purpose behind this emotion detection workflow is to create a system that can be used by voice-enabled systems to provide a greater level of understanding of the user, by adapting a human-like approach, which can then provide benefits such as a greater personalization suite for these systems.
+
+Slide 8
+Thank you, is there any questions 
